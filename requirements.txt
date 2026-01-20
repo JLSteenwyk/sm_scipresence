@@ -1,0 +1,15 @@
+# bioRxiv scraper
+requests>=2.31.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Claude API
+anthropic>=0.39.0
+
+# PDF processing
+PyMuPDF>=1.24.0
+Pillow>=10.0.0
+
+# Bluesky API
+atproto>=0.0.55
