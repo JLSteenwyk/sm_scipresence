@@ -12,6 +12,46 @@ from biorxiv_scraper import Preprint
 
 POSTED_PREPRINTS_FILE = Path(__file__).parent / "posted_preprints.json"
 
+# Terms to exclude from posting (illicit drugs and related topics)
+EXCLUDED_TERMS = [
+    "psilocybin",
+    "psilocin",
+    "psychedelic",
+    "hallucinogen",
+    "hallucinogenic",
+    "lsd",
+    "lysergic",
+    "dmt",
+    "dimethyltryptamine",
+    "ayahuasca",
+    "mescaline",
+    "peyote",
+    "magic mushroom",
+    "psychoactive mushroom",
+    "mdma",
+    "ecstasy",
+    "cocaine",
+    "methamphetamine",
+    "heroin",
+    "opioid abuse",
+    "cannabis recreational",
+    "marijuana recreational",
+    "drug abuse",
+    "illicit drug",
+]
+
+
+def filter_excluded_topics(preprints: List[Preprint]) -> List[Preprint]:
+    """Filter out preprints related to illicit drugs and excluded topics."""
+    filtered = []
+    for p in preprints:
+        text = f"{p.title} {p.abstract}".lower()
+        if not any(term in text for term in EXCLUDED_TERMS):
+            filtered.append(p)
+        else:
+            print(f"Excluding (illicit drug topic): {p.title[:60]}...")
+    return filtered
+
 
 def load_posted_preprints() -> set:
     """Load the set of already-posted preprint DOIs."""
@@ -55,6 +95,13 @@ def select_best_preprint(preprints: List[Preprint]) -> Optional[Preprint]:
 
     if not candidates:
         print("All preprints have already been posted.")
+        return None
+
+    # Filter out preprints about illicit drugs
+    candidates = filter_excluded_topics(candidates)
+
+    if not candidates:
+        print("No suitable preprints after filtering excluded topics.")
         return None
 
     print(f"Selecting from {len(candidates)} unposted preprints...")

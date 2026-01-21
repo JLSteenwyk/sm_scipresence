@@ -42,6 +42,10 @@ class BlueskyPost:
         return self.posts[0] if self.posts else ""
 
 
+# Maximum PDF size to send to Claude (10 MB raw = ~13 MB base64)
+MAX_PDF_SIZE_BYTES = 10 * 1024 * 1024
+
+
 def download_pdf(url: str) -> Optional[bytes]:
     """Download PDF from URL and return bytes."""
     try:
@@ -49,7 +53,15 @@ def download_pdf(url: str) -> Optional[bytes]:
             "User-Agent": "BioSkyPoster/1.0 (Academic Research Bot)"
         })
         response.raise_for_status()
-        return response.content
+        content = response.content
+
+        # Check if PDF is too large for Claude API
+        if len(content) > MAX_PDF_SIZE_BYTES:
+            print(f"PDF too large ({len(content) / 1024 / 1024:.1f} MB > {MAX_PDF_SIZE_BYTES / 1024 / 1024:.0f} MB limit)")
+            print("Will use abstract-only mode for post generation")
+            return None
+
+        return content
     except requests.RequestException as e:
         print(f"Error downloading PDF: {e}")
         return None
@@ -271,15 +283,21 @@ def generate_post(
                 # Success on retry
                 return BlueskyPost(posts=posts, is_thread=False)
 
-            # Still too long - automatically switch to thread mode
-            print(f"Post still too long ({len(posts[0])} chars), switching to thread mode...")
-            response_text = _call_claude_for_post(
-                preprint, pdf_content, stop_slop_rules,
-                thread_mode=True
-            )
-            posts = _parse_posts(response_text, thread_mode=True)
-
-            return BlueskyPost(posts=posts, is_thread=True)
+            # Still too long - only switch to thread mode if we have PDF content
+            # (abstract-only mode should stay as single post)
+            if pdf_content:
+                print(f"Post still too long ({len(posts[0])} chars), switching to thread mode...")
+                response_text = _call_claude_for_post(
+                    preprint, pdf_content, stop_slop_rules,
+                    thread_mode=True
+                )
+                posts = _parse_posts(response_text, thread_mode=True)
+                return BlueskyPost(posts=posts, is_thread=True)
+            else:
+                # In abstract-only mode, truncate rather than thread
+                print(f"Post too long ({len(posts[0])} chars) but in abstract-only mode, truncating...")
+                truncated = posts[0][:SINGLE_POST_LIMIT - 3] + "..."
+                return BlueskyPost(posts=[truncated], is_thread=False)
 
     except Exception as e:
         print(f"Error generating post: {e}")
