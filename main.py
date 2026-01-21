@@ -22,6 +22,7 @@ from post_generator import generate_post, download_pdf
 from figure_extractor import extract_figure_from_pdf
 from bluesky_poster import BlueskyPoster
 from framing_question import save_preprint_for_followup
+from posting_history import save_to_history
 
 
 def main():
@@ -201,6 +202,17 @@ Examples:
                     "web_url": selected.web_url,
                 })
                 print("Saved preprint info for afternoon follow-up")
+
+                # Save to posting history for weekly roundups
+                save_to_history({
+                    "doi": selected.doi,
+                    "title": selected.title,
+                    "abstract": selected.abstract,
+                    "category": selected.category,
+                    "web_url": selected.web_url,
+                    "authors": selected.authors,
+                })
+                print("Saved to posting history")
             else:
                 print("\nFailed to post to Bluesky")
                 sys.exit(1)

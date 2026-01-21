@@ -4,6 +4,11 @@
 
 cd /home/jlsteenwyk/Desktop/bluesky_science
 
+# Load environment variables
+set -a
+source .env
+set +a
+
 # Random delay between 0-20 minutes (0-1200 seconds)
 DELAY=$((RANDOM % 1200))
 echo "$(date): Waiting ${DELAY} seconds before posting..."

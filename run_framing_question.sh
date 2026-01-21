@@ -4,6 +4,11 @@
 
 cd /home/jlsteenwyk/Desktop/bluesky_science
 
+# Load environment variables
+set -a
+source .env
+set +a
+
 # Random delay between 0-45 minutes (0-2700 seconds) for 11:45 AM - 12:30 PM window
 DELAY=$((RANDOM % 2700))
 echo "$(date): Waiting ${DELAY} seconds before posting framing question..."
