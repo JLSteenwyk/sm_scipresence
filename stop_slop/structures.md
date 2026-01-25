@@ -49,6 +49,16 @@ These announce insight rather than deliver it.
 | "By the time X, I was Y." | Narrative template |
 | "X that isn't Y" | Indirect. Say "X is broken" |
 
+## Em-Dashes
+
+**Never use em-dashes (—).** They are overused in AI writing for dramatic pauses and asides. Use commas, periods, or parentheses instead.
+
+| Don't write | Write instead |
+|-------------|---------------|
+| "The results—surprisingly—showed..." | "The results, surprisingly, showed..." |
+| "One gene—Crq—regulates..." | "One gene, Crq, regulates..." |
+| "This matters—a lot." | "This matters." |
+
 ## Rhythm Patterns
 
 | Pattern | Fix |
@@ -58,9 +68,7 @@ These announce insight rather than deliver it.
 | Paragraphs starting with "So" | Start with content |
 | Sentences starting with "Look," | Remove |
 | Every paragraph ends punchily | Vary endings |
-| Em-dashes before reveals | Use periods or commas |
 | Staccato fragmentation | Don't stack short punchy sentences |
-| Dashes for dramatic pause | Use commas or periods |
 | "Not always. Not perfectly." | Hedging disguised as reassurance |
 
 ## Word Patterns

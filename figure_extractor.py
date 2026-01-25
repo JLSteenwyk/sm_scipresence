@@ -107,7 +107,7 @@ def extract_figure_from_pdf(
                 if score > best_score:
                     best_score = score
 
-                    # Convert to PNG for consistency
+                    # Convert and compress for Bluesky
                     try:
                         img = Image.open(io.BytesIO(image_bytes))
                         # Convert to RGB if necessary (handles CMYK, etc.)
@@ -121,16 +121,49 @@ def extract_figure_from_pdf(
                             new_size = (int(img.width * ratio), int(img.height * ratio))
                             img = img.resize(new_size, Image.LANCZOS)
 
-                        # Save as PNG
+                        # Bluesky limit is ~1MB (976KB), target 900KB to be safe
+                        max_size_bytes = 900 * 1024
+
+                        # Try PNG first
                         output = io.BytesIO()
                         img.save(output, format="PNG", optimize=True)
                         png_bytes = output.getvalue()
+
+                        # If PNG is too large, use JPEG with progressive quality reduction
+                        img_format = "PNG"
+                        if len(png_bytes) > max_size_bytes:
+                            print(f"    PNG too large ({len(png_bytes) / 1024:.0f}KB), compressing to JPEG...")
+                            # Convert to RGB for JPEG (no alpha)
+                            if img.mode == "RGBA":
+                                img = img.convert("RGB")
+
+                            # Try decreasing quality until it fits
+                            for quality in [85, 75, 65, 55, 45]:
+                                output = io.BytesIO()
+                                img.save(output, format="JPEG", quality=quality, optimize=True)
+                                if len(output.getvalue()) <= max_size_bytes:
+                                    png_bytes = output.getvalue()
+                                    img_format = "JPEG"
+                                    break
+
+                            # If still too large, also reduce dimensions
+                            if len(output.getvalue()) > max_size_bytes:
+                                for scale in [0.75, 0.5, 0.4, 0.3]:
+                                    new_size = (int(img.width * scale), int(img.height * scale))
+                                    resized = img.resize(new_size, Image.LANCZOS)
+                                    output = io.BytesIO()
+                                    resized.save(output, format="JPEG", quality=70, optimize=True)
+                                    if len(output.getvalue()) <= max_size_bytes:
+                                        png_bytes = output.getvalue()
+                                        img = resized
+                                        img_format = "JPEG"
+                                        break
 
                         best_image = ExtractedFigure(
                             image_bytes=png_bytes,
                             width=img.width,
                             height=img.height,
-                            format="PNG",
+                            format=img_format,
                             page_num=page_num,
                             description=f"Figure from page {page_num + 1}"
                         )

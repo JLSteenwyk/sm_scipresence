@@ -94,6 +94,82 @@ class BlueskyPoster:
 
         return full_text, [facet]
 
+    def _parse_uri(self, uri: str) -> tuple[str, str]:
+        """Parse an AT URI into (did, rkey).
+
+        Args:
+            uri: AT URI like 'at://did:plc:xxx/app.bsky.feed.post/yyy'
+
+        Returns:
+            Tuple of (did, rkey)
+        """
+        # Format: at://did:plc:xxx/app.bsky.feed.post/rkey
+        parts = uri.replace("at://", "").split("/")
+        did = parts[0]
+        rkey = parts[-1]
+        return did, rkey
+
+    def _get_post_ref(self, uri: str) -> models.ComAtprotoRepoStrongRef.Main:
+        """Get a strong reference for an existing post by URI.
+
+        Args:
+            uri: AT URI of the post
+
+        Returns:
+            Strong reference to the post
+        """
+        did, rkey = self._parse_uri(uri)
+
+        # Fetch the post to get its CID
+        response = self.client.get_post(rkey, did)
+
+        return models.ComAtprotoRepoStrongRef.Main(
+            uri=uri,
+            cid=response.cid
+        )
+
+    def post_reply(
+        self,
+        text: str,
+        reply_to_uri: str,
+        root_uri: Optional[str] = None
+    ) -> Optional[str]:
+        """Post a reply to an existing post.
+
+        Args:
+            text: Reply text
+            reply_to_uri: AT URI of the post to reply to
+            root_uri: AT URI of the thread root (defaults to reply_to_uri)
+
+        Returns:
+            Post URI if successful, None otherwise
+        """
+        if not self._logged_in:
+            if not self.login():
+                return None
+
+        try:
+            # Get references for parent and root
+            parent_ref = self._get_post_ref(reply_to_uri)
+            root_ref = self._get_post_ref(root_uri) if root_uri else parent_ref
+
+            reply = models.AppBskyFeedPost.ReplyRef(
+                parent=parent_ref,
+                root=root_ref
+            )
+
+            response = self.client.send_post(
+                text=text,
+                reply_to=reply
+            )
+
+            print(f"Posted reply successfully: {response.uri}")
+            return response.uri
+
+        except Exception as e:
+            print(f"Failed to post reply: {e}")
+            return None
+
     def post_single(
         self,
         text: str,

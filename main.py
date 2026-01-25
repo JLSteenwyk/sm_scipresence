@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from biorxiv_scraper import BiorxivScraper
-from preprint_selector import select_best_preprint, save_posted_preprint
+from preprint_selector import select_best_preprint, select_ranked_preprints, save_posted_preprint
 from post_generator import generate_post, download_pdf
 from figure_extractor import extract_figure_from_pdf
 from bluesky_poster import BlueskyPoster
@@ -86,16 +86,59 @@ Examples:
 
     print(f"Found {len(preprints)} preprints matching target themes")
 
-    # Step 2: Select the best preprint using Claude
+    # Step 2: Rank preprints using Claude
     print("\n" + "=" * 60)
-    print("STEP 2: Selecting the best preprint...")
+    print("STEP 2: Ranking preprints by scientific merit...")
     print("=" * 60)
 
-    selected = select_best_preprint(preprints)
+    ranked_preprints = select_ranked_preprints(preprints, top_n=5)
 
-    if not selected:
-        print("No suitable preprint selected. Exiting.")
+    if not ranked_preprints:
+        print("No suitable preprints found. Exiting.")
         sys.exit(1)
+
+    # Step 3 & 4: Try each ranked preprint until we find one with an extractable figure
+    print("\n" + "=" * 60)
+    print("STEP 3-4: Finding preprint with extractable figure...")
+    print("=" * 60)
+
+    selected = None
+    pdf_content = None
+    figure = None
+
+    if args.no_image:
+        # If no image mode, just use the top-ranked preprint
+        print("--no-image mode: using top-ranked preprint")
+        selected = ranked_preprints[0]
+        pdf_content = download_pdf(selected.pdf_url)
+    else:
+        # Try each ranked preprint until we find one with a figure
+        for i, candidate in enumerate(ranked_preprints, 1):
+            print(f"\nTrying candidate {i}/{len(ranked_preprints)}: {candidate.title[:50]}...")
+
+            # Download PDF
+            candidate_pdf = download_pdf(candidate.pdf_url)
+            if not candidate_pdf:
+                print("  Could not download PDF, trying next...")
+                continue
+
+            # Try to extract figure
+            candidate_figure = extract_figure_from_pdf(candidate_pdf)
+            if candidate_figure:
+                print(f"  Found figure: {candidate_figure.width}x{candidate_figure.height} pixels")
+                selected = candidate
+                pdf_content = candidate_pdf
+                figure = candidate_figure
+                break
+            else:
+                print("  No suitable figure found, trying next...")
+
+        # Fall back to top-ranked preprint if no figures found
+        if not selected:
+            print("\nNo preprints with extractable figures found.")
+            print("Falling back to top-ranked preprint without figure.")
+            selected = ranked_preprints[0]
+            pdf_content = download_pdf(selected.pdf_url)
 
     print(f"\nSelected preprint:")
     print(f"  Title: {selected.title}")
@@ -104,34 +147,8 @@ Examples:
     print(f"  Date: {selected.date}")
     print(f"  DOI: {selected.doi}")
     print(f"  URL: {selected.web_url}")
-
-    # Step 3: Download PDF
-    print("\n" + "=" * 60)
-    print("STEP 3: Downloading PDF...")
-    print("=" * 60)
-
-    pdf_content = download_pdf(selected.pdf_url)
-    if pdf_content:
-        print(f"Downloaded PDF: {len(pdf_content) / 1024 / 1024:.1f} MB")
-    else:
-        print("Warning: Could not download PDF, will use abstract only")
-
-    # Step 4: Extract figure (unless disabled)
-    figure = None
-    if not args.no_image and pdf_content:
-        print("\n" + "=" * 60)
-        print("STEP 4: Extracting figure from PDF...")
-        print("=" * 60)
-
-        figure = extract_figure_from_pdf(pdf_content)
-        if figure:
-            print(f"Extracted figure: {figure.width}x{figure.height} pixels")
-        else:
-            print("Warning: Could not extract a suitable figure")
-    elif args.no_image:
-        print("\n" + "=" * 60)
-        print("STEP 4: Skipping figure extraction (--no-image)")
-        print("=" * 60)
+    if figure:
+        print(f"  Figure: {figure.width}x{figure.height} pixels")
 
     # Step 5: Generate post using Claude
     print("\n" + "=" * 60)
@@ -193,13 +210,16 @@ Examples:
                 save_posted_preprint(selected.doi)
                 print(f"\nMarked {selected.doi} as posted")
 
-                # Save preprint info for afternoon follow-up
+                # Save preprint info for afternoon follow-up (include post URI for replies)
                 save_preprint_for_followup({
                     "doi": selected.doi,
                     "title": selected.title,
                     "abstract": selected.abstract,
                     "category": selected.category,
                     "web_url": selected.web_url,
+                    "post_uri": uris[0],  # First post URI (or only post for single)
+                    "root_uri": uris[0],  # Root of thread
+                    "last_uri": uris[-1],  # Last post in thread (for replying to end)
                 })
                 print("Saved preprint info for afternoon follow-up")
 

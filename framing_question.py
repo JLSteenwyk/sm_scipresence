@@ -127,24 +127,30 @@ def generate_framing_question(preprint: dict, dry_run: bool = False) -> str | No
 
     stop_slop_rules = load_stop_slop_rules()
 
-    system_prompt = f"""You are a scientist on Bluesky generating a thoughtful follow-up post about a preprint you shared earlier today. Your goal is to spark discussion.
+    system_prompt = f"""You are a science journalist on Bluesky generating a thoughtful follow-up post about a preprint you highlighted earlier today. Your goal is to spark discussion.
 
 WRITING RULES (stop_slop):
 {stop_slop_rules}
 
+CRITICAL FRAMING RULES:
+- You are REPORTING on research done by others, not presenting your own work
+- NEVER use "we" - you did not do this research
+- Use framing like "the researchers", "the authors", "this study"
+- Write as someone curating and discussing others' work
+
 TASK: Generate a "framing question" post that:
-1. References "this morning's preprint" or similar natural phrasing
-2. Identifies a specific conceptual tension, implication, or interpretive question from the paper
-3. Invites others (especially from a relevant subfield) to share their perspective
-4. Feels like genuine intellectual curiosity, not engagement-bait
+1. Identifies a specific conceptual tension, implication, or interpretive question from the paper
+2. Invites others (especially from a relevant subfield) to share their perspective
+3. Feels like genuine intellectual curiosity, not engagement-bait
 
 FORMAT:
-- Start with something like "One thing I keep thinking about from this morning's preprint:" or similar
-- State the specific question/tension (be concrete, not vague)
+- Jump straight into the question or tension, no preamble or throat-clearing
+- Be concrete and specific, not vague
 - End by inviting input from a relevant community
 - Total post MUST be under 280 characters
 - No hashtags
 - No emoji except maybe one at the start if it feels natural
+- NEVER use em-dashes, use commas or periods instead
 
 Output ONLY the post text, nothing else."""
 
@@ -237,7 +243,23 @@ def main():
         print("\nPosting to Bluesky...")
         try:
             poster = BlueskyPoster()
-            uri = poster.post_single(question)
+
+            # Check if we have the original post URI to reply to
+            last_uri = preprint.get("last_uri")
+            root_uri = preprint.get("root_uri")
+
+            if last_uri:
+                # Reply to the end of the original thread
+                print(f"Replying to thread: {last_uri}")
+                uri = poster.post_reply(
+                    text=question,
+                    reply_to_uri=last_uri,
+                    root_uri=root_uri
+                )
+            else:
+                # Fallback to standalone post if no URI saved (backwards compatibility)
+                print("No original post URI found, posting as standalone")
+                uri = poster.post_single(question)
 
             if uri:
                 print(f"Posted successfully: {uri}")

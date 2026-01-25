@@ -9,6 +9,26 @@
       "authors": "Razavi, R.; Fathi, A.; Yellan, I.; Brechalov, A.; Laverty, K. U.; Jolma, A.; Hernandez-Corchado, A.; Zheng, H.; Yang, A. W.; Albu, M.; Barazandeh, M.; Hu, C.; Vorontsov, I.; Patel, Z. M.; The Codebook Consortium,  ; Kulakovskiy, I. V.; Bucher, P.; Morris, Q.; Najafabadi, H. S.; Hughes, T. R.",
       "posted_at": "2026-01-21T15:28:01.085967",
       "posted_date": "2026-01-21"
+    },
+    {
+      "doi": "10.1101/2024.10.29.620654",
+      "title": "The GENCODE CLS project: massively expanding the lncRNA catalog through capture long-read RNA sequencing",
+      "abstract": "Accurate and complete gene annotations are indispensable for understanding how genome sequences encode biological functions. For more than twenty years, the GENCODE consortium has developed reference annotations for the human and mouse genomes, becoming a foundation for biomedical and genomics communities worldwide. Nevertheless, collections of important yet poorly-understood gene classes like long non-coding RNAs (lncRNAs) remain incomplete and scattered across multiple, uncoordinated catalogs. To address this, GENCODE has undertaken the most comprehensive lncRNA annotation effort to date. This is founded on the manually supervised computational annotation of full-length targeted long-read sequencing, on matched embryonic and adult tissues, of orthologous regions in human and mouse. Altogether 17,931 human genes (140,268 transcripts) and 22,784 mouse genes (136,169 transcripts) have been added to the GENCODE catalog representing a 2-fold and 6-fold growth in transcripts, respectively - the greatest increase in the number of annotated human genes since the sequencing of the human genome. Our targeted design assigned human-mouse orthologs at a rate beyond previous studies, tripling the number of human disease-associated lncRNAs that have mouse orthologs. Novel lncRNA genes consistently exhibit biological signals of functionality, and they greatly enhance the functional interpretability of the human genome. While poorly expressed in bulk RNA-Seq samples, many of them are highly expressed in specific cell populations, maybe even contributing to cell-type determination. The expanded GENCODE lncRNA annotations mark a critical step toward deciphering the human and mouse genomes.",
+      "category": "genomics",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.10.29.620654",
+      "authors": "Perteghella, T.; Kaur, G.; Carbonell-Sala, S.; Gonzalez-Martinez, J.; Hunt, T.; Madry, T.; Jungreis, I.; Degalez, F.; Arnan, C.; Nurtdinov, R.; Lagarde, J.; Borsari, B.; Sisu, C.; Jiang, Y.; Bennett, R.; Berry, A.; Blangiewicz, M.; Cerdan-Velez, D.; Cochran, K.; Vara, C.; Davidson, C.; Donaldson, S.; Dursun, C.; Gonazlez-Lopez, S.; Gopal Das, S.; Lawrence, K.; Nachun, D.; Hardy, M.; Hollis, Z.; Kay, M.; Montanes, J. C.; Ni, P.; Palumbo, E.; Pulido-Quetglas, C.; Suner, M.-M.; Yu, X.; Zhang, D.; Aguet, F.; Ardlie, K.; Montgomery, S. B.; Loveland, J. E.; Alba, M. M.; Diekhans, M.; Tanzer, A.; Mud",
+      "posted_at": "2026-01-22T08:33:20.560071",
+      "posted_date": "2026-01-22"
+    },
+    {
+      "doi": "10.1101/2024.08.29.610163",
+      "title": "Structural Snapshots of B12-Dependent Methionine Synthase's Catalytic Conformations",
+      "abstract": "Cobalamin (vitamin B12) and its derivatives play an essential role in biological methylation, with cobalamin-dependent methionine synthase (MS) serving as a canonical example. MS catalyzes multiple methyl transfers within a single, dynamic multi-domain architecture that has proven challenging to study, hampering efforts to elucidate its catalytic mechanism(s). Utilizing a thermostable MS homolog and non-native cobalamin cofactors, we have captured crystal structures of transient conformational states of MS, including those directly involved in folate demethylation and homocysteine methylation. These snapshots reveal the mechanistic significance of five-coordinate, His-off methylcobalamin in homocysteine methylation and highlight the crucial role of the folate-binding domain and interdomain linkers in orchestrating the intricate structural rearrangements required for catalysis. This expanded conformational ensemble, including the unexpected capture of novel  Cap-on conformations, underscores the remarkable plasticity of MS, exceeding previous estimations. Our findings provide crucial insights into the catalytic mechanism of MS, laying the foundation for harnessing cobalamins biocatalytic potential and elucidating how nature exploits protein dynamics to facilitate complex transformations.",
+      "category": "biochemistry",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.08.29.610163",
+      "authors": "Mendoza, J.; Yamada, K.; Castillo, C.; Salampuriya, R.; Wilhelm, C. A.; Koutmos, M.",
+      "posted_at": "2026-01-24T11:47:24.305496",
+      "posted_date": "2026-01-24"
     }
   ]
 }

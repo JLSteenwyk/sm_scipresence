@@ -129,7 +129,7 @@ Abstract: {p.abstract[:1500]}...
 
     summaries_text = "\n---\n".join(summaries)
 
-    prompt = f"""You are an expert in evolutionary biology, genomics, and bioinformatics. Your task is to select the ONE preprint most likely to be published in a top-tier journal (Nature, Science, Cell, PNAS, Current Biology, eLife, Molecular Biology and Evolution, Genome Research, etc.).
+    prompt = f"""You are an expert in evolutionary biology, genomics, and bioinformatics. Your task is to rank the TOP 5 preprints most likely to be published in a top-tier journal (Nature, Science, Cell, PNAS, Current Biology, eLife, Molecular Biology and Evolution, Genome Research, etc.).
 
 Consider these factors:
 1. Scientific novelty and significance
@@ -142,7 +142,7 @@ Here are the candidate preprints:
 
 {summaries_text}
 
-Respond with ONLY the number of the best preprint (e.g., "3" if PREPRINT 3 is best). No explanation needed."""
+Respond with ONLY the numbers of the top 5 preprints in ranked order, separated by commas (e.g., "3,7,1,12,5" if PREPRINT 3 is best, 7 is second-best, etc.). If fewer than 5 candidates, rank all of them. No explanation needed."""
 
     client = anthropic.Anthropic()
 
@@ -154,22 +154,124 @@ Respond with ONLY the number of the best preprint (e.g., "3" if PREPRINT 3 is be
         )
 
         selection_text = response.content[0].text.strip()
-        # Extract the number
-        selection_num = int("".join(c for c in selection_text if c.isdigit()))
-        selection_idx = selection_num - 1
+        # Parse comma-separated numbers
+        numbers = [int(n.strip()) for n in selection_text.split(",") if n.strip().isdigit()]
 
-        if 0 <= selection_idx < len(candidates):
-            selected = candidates[selection_idx]
-            print(f"Selected: {selected.title[:60]}...")
+        # Convert to 0-indexed and filter valid indices
+        ranked_indices = [n - 1 for n in numbers if 0 <= n - 1 < len(candidates)]
+
+        if ranked_indices:
+            selected = candidates[ranked_indices[0]]
+            print(f"Top ranked: {selected.title[:60]}...")
             return selected
         else:
-            print(f"Invalid selection {selection_num}, defaulting to first candidate")
+            print(f"Invalid selection, defaulting to first candidate")
             return candidates[0]
 
     except Exception as e:
         print(f"Error selecting preprint: {e}")
         print("Defaulting to first candidate")
         return candidates[0]
+
+
+def select_ranked_preprints(preprints: List[Preprint], top_n: int = 5) -> List[Preprint]:
+    """Use Claude to rank preprints by likelihood of top-tier publication.
+
+    Args:
+        preprints: List of candidate preprints
+        top_n: Number of top candidates to return
+
+    Returns:
+        List of top Preprints in ranked order, or empty list if none suitable
+    """
+    if not preprints:
+        print("No preprints to select from.")
+        return []
+
+    # Filter out already-posted preprints
+    candidates = filter_unposted(preprints)
+
+    if not candidates:
+        print("All preprints have already been posted.")
+        return []
+
+    # Filter out preprints about illicit drugs
+    candidates = filter_excluded_topics(candidates)
+
+    if not candidates:
+        print("No suitable preprints after filtering excluded topics.")
+        return []
+
+    print(f"Ranking {len(candidates)} unposted preprints...")
+
+    # If only one candidate, return it
+    if len(candidates) == 1:
+        return candidates
+
+    # Prepare summaries for Claude
+    summaries = []
+    for i, p in enumerate(candidates):
+        summary = f"""
+PREPRINT {i + 1}:
+Title: {p.title}
+Category: {p.category}
+Date: {p.date}
+Abstract: {p.abstract[:1500]}...
+"""
+        summaries.append(summary)
+
+    # Limit to top 20 candidates to avoid token limits
+    if len(summaries) > 20:
+        summaries = summaries[:20]
+        candidates = candidates[:20]
+
+    summaries_text = "\n---\n".join(summaries)
+
+    prompt = f"""You are an expert in evolutionary biology, genomics, and bioinformatics. Your task is to rank the TOP {min(top_n, len(candidates))} preprints most likely to be published in a top-tier journal (Nature, Science, Cell, PNAS, Current Biology, eLife, Molecular Biology and Evolution, Genome Research, etc.).
+
+Consider these factors:
+1. Scientific novelty and significance
+2. Methodological rigor and innovation
+3. Broad impact and appeal across fields
+4. Quality of the research question
+5. Strength of the findings based on the abstract
+
+Here are the candidate preprints:
+
+{summaries_text}
+
+Respond with ONLY the numbers of the top {min(top_n, len(candidates))} preprints in ranked order, separated by commas (e.g., "3,7,1,12,5" if PREPRINT 3 is best, 7 is second-best, etc.). No explanation needed."""
+
+    client = anthropic.Anthropic()
+
+    try:
+        response = client.messages.create(
+            model="claude-sonnet-4-5-20250929",
+            max_tokens=50,
+            messages=[{"role": "user", "content": prompt}],
+        )
+
+        selection_text = response.content[0].text.strip()
+        # Parse comma-separated numbers
+        numbers = [int(n.strip()) for n in selection_text.split(",") if n.strip().isdigit()]
+
+        # Convert to 0-indexed and filter valid indices
+        ranked_indices = [n - 1 for n in numbers if 0 <= n - 1 < len(candidates)]
+
+        if ranked_indices:
+            ranked = [candidates[i] for i in ranked_indices[:top_n]]
+            print(f"Ranked {len(ranked)} candidates")
+            for i, p in enumerate(ranked, 1):
+                print(f"  {i}. {p.title[:60]}...")
+            return ranked
+        else:
+            print(f"Invalid selection, returning first {top_n} candidates")
+            return candidates[:top_n]
+
+    except Exception as e:
+        print(f"Error ranking preprints: {e}")
+        print(f"Returning first {top_n} candidates")
+        return candidates[:top_n]
 
 
 if __name__ == "__main__":
