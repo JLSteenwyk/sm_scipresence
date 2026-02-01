@@ -13,3 +13,6 @@ Pillow>=10.0.0
 
 # Bluesky API
 atproto>=0.0.55
+
+# Unicode grapheme counting
+grapheme>=0.6.0

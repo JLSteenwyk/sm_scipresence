@@ -29,6 +29,36 @@
       "authors": "Mendoza, J.; Yamada, K.; Castillo, C.; Salampuriya, R.; Wilhelm, C. A.; Koutmos, M.",
       "posted_at": "2026-01-24T11:47:24.305496",
       "posted_date": "2026-01-24"
+    },
+    {
+      "doi": "10.1101/2024.12.07.627362",
+      "title": "Spatially-resolved molecular sex differences at single cell resolution in the adult human ventromedial and arcuate hypothalamus",
+      "abstract": "The hypothalamus contains multiple regions, including the ventromedial hypothalamus (VMH) and arcuate (ARC), which are responsible for sex-differentiated functions such as endocrine signaling, metabolism, and reproductive behaviors. While molecular, anatomic, and sex-differentiated features of rodent hypothalamus are well-established, much less is known about these regions in humans. Here we provide a spatially-resolved single cell atlas of sex-differentially expressed (sex-DE) genes in human VMH and ARC. We identify neuronal populations governing hypothalamus-specific functions, define their spatial distributions, and show increased retinoid pathway gene expression compared to rodents. Within VMH and ARC, we find correlated autosomal expression differences localized to ESR1/TAC3-expressing and CRHR2-expressing neurons, and extensive sex-DE of genes linked to sex-biased disorders including autism, depression, and schizophrenia. Our molecular mapping of disease associations to hypothalamic cell types with established roles in sex-divergent physiology and behavior provides insights into mechanistic bases of sex bias in neurodevelopmental and neuropsychiatric disorders.",
+      "category": "genomics",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.12.07.627362",
+      "authors": "Mulvey, B.; Wang, Y.; Divecha, H. R.; Bach, S. V.; Montgomery, K. D.; Cinquemani, S.; Chandra, A.; Du, Y.; Miller, R. A.; Kleinman, J. E.; Page, S. C.; Hyde, T. M.; Martinowich, K.; Hicks, S. C.; Hansen, K. D.; Maynard, K. R.",
+      "posted_at": "2026-01-26T08:28:12.028732",
+      "posted_date": "2026-01-26"
+    },
+    {
+      "doi": "10.1101/2024.06.06.597697",
+      "title": "The effect of gene tree dependence on summary methods for speciestree inference",
+      "abstract": "When inferring the evolutionary history of species and the genes they contain, the phylogenetic trees of genes can be different from those of the species and to each other, due to a variety of causes, including incomplete lineage sorting. We often wish to infer the species tree, but only reconstruct the gene trees from sequences. We then combine the gene trees to produce a species tree; methods to do this are known as summary methods, of which ASTRAL is currently among the most popular. ASTRAL has been shown to be accurate in many practical scenarios through extensive simulations. However, these simulations generally assume that the input gene trees are independent of each other (infinite recombination between loci). This is known to be unrealistic, as genes that are close to each other on the chromosome (or are co-evolving) have dependent phylogenies. In this paper, we develop a model for generating dependent gene trees within a species tree, based on the coalescent with recombination. We then use these trees as input to ASTRAL to reassess its accuracy for dependent gene trees. Our results allow us to evaluate the impact of any level of dependence on the accuracy of ASTRAL, both when gene trees are known and estimated from sequences. We find that a fixed amount of dependence reduces the effective sample size by a constant factor. In current phylogenomic datasets, loci are generally sampled at large genomic distances to reduce gene tree dependence, thereby limiting the number of genes available for inference. However, full independence between genes is not required for accurate species tree estimation, and excluding gene trees may reduce inference accuracy. This creates a trade-off between the number of genes used and the degree of gene tree dependence. We therefore propose a method to identify the minimum genomic separation required to maintain satisfactory inference accuracy.",
+      "category": "evolutionary biology",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.06.06.597697",
+      "authors": "He, W.; Scornavacca, C.; Chan, Y.-b.",
+      "posted_at": "2026-01-28T08:24:58.214750",
+      "posted_date": "2026-01-28"
+    },
+    {
+      "doi": "10.1101/2025.02.01.636056",
+      "title": "Longitudinal structural variant phylogenies define tumor evolution under therapeutic selection pressure in metastatic prostate cancer",
+      "abstract": "Therapeutic pressure shapes tumor evolution by selecting for subclones with distinct genomic architectures that drive resistance. In metastatic castration-resistant prostate cancer (mCRPC), structural variants (SVs) are major drivers of this process but are rarely incorporated into clonal reconstruction from bulk DNA sequencing data. Here we describe SVCFit, a computational framework for estimating the cellular fraction of diverse classes of structural variants from whole-genome sequencing and using these estimates to reconstruct clonal evolutionary relationships. SVCFit explicitly models SV-type-specific breakpoint and breakend patterns and accounts for local copy-number context, enabling accurate estimation of SV cellular fraction across heterogeneous tumor genomes. Using simulated datasets and in silico mixtures of metastatic prostate cancer samples, we show that SVCFit achieves consistently lower estimation error than the current state-of-the-art approaches. We then apply SVCFit to longitudinal whole-genome sequencing data from patients with mCRPC treated with bipolar androgen therapy (supraphysiologic testosterone). Structural variant-based clonal phylogenies reveal marked treatment-associated clonal reconfiguration, including contraction of highly rearranged subclones and expansion of resistant populations defined by distinct structural alterations. Together, these results demonstrate that integrating structural variants into clonal evolutionary analysis provides critical insight into tumor evolution under therapy. SVCFit enables reconstruction of SV-defined clonal architecture from routine whole-genome sequencing, expanding the toolkit for studying cancer evolution in precision oncology.",
+      "category": "bioinformatics",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2025.02.01.636056",
+      "authors": "Liu, Y.; Lai, J.; Markowski, M. C.; Antonarakis, E. S.; De Marzo, A. M.; Yegnasubramanian, S.; Wood, L. D.; Sena, L. A.; Karchin, R.",
+      "posted_at": "2026-01-29T08:22:15.038108",
+      "posted_date": "2026-01-29"
     }
   ]
 }

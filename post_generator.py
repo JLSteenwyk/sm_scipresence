@@ -7,6 +7,7 @@ from typing import List, Optional
 from dataclasses import dataclass
 
 import anthropic
+import grapheme
 import requests
 
 from biorxiv_scraper import Preprint
@@ -14,6 +15,26 @@ from biorxiv_scraper import Preprint
 
 # Load stop_slop rules
 STOP_SLOP_DIR = Path(__file__).parent / "stop_slop"
+
+# Bluesky's limit is 300 graphemes per post
+BLUESKY_GRAPHEME_LIMIT = 300
+# bioRxiv URLs are ~56 chars, plus "\n\n" = ~60 chars buffer needed for first post
+URL_BUFFER = 65
+
+
+def count_graphemes(text: str) -> int:
+    """Count graphemes in text (what Bluesky uses for length limits)."""
+    return grapheme.length(text)
+
+
+def truncate_to_graphemes(text: str, max_graphemes: int) -> str:
+    """Truncate text to a maximum number of graphemes."""
+    if count_graphemes(text) <= max_graphemes:
+        return text
+    # Use grapheme slicing to get the first max_graphemes-3, then add "..."
+    grapheme_list = list(grapheme.graphemes(text))
+    truncated = "".join(grapheme_list[:max_graphemes - 3]) + "..."
+    return truncated
 
 
 def load_stop_slop_rules() -> str:
@@ -83,8 +104,9 @@ def _call_claude_for_post(
         format_instructions = """Generate a Bluesky THREAD (3-5 posts) about this preprint.
 
 CRITICAL CONSTRAINTS:
-- The FIRST post MUST be under 220 characters (a link will be appended)
-- Posts 2-5 MUST each be under 280 characters
+- The FIRST post MUST be under 230 characters (a link will be appended separately)
+- Posts 2-5 MUST each be under 290 characters
+- Bluesky counts graphemes, not bytes, so special characters count as expected
 - The first post should hook readers
 - Subsequent posts should expand on key findings
 - Final post can include implications or significance
@@ -120,9 +142,20 @@ WRITING RULES (stop_slop):
 CRITICAL FRAMING RULES:
 - You are REPORTING on research done by others, not presenting your own work
 - NEVER use "we" - you did not do this research
-- Use third-person framing: "Researchers found...", "The study shows...", "Scientists report...", "The team discovered..."
 - Attribute findings to the authors/researchers, not yourself
 - Write as a journalist highlighting interesting work, not as a participant
+
+SENTENCE VARIETY (important!):
+- VARY your opening structure. Do NOT always start with "Researchers..."
+- Good openings can lead with: the organism/system, the finding itself, a surprising fact, the method, or the implication
+- Examples of varied openings:
+  * "Fruit flies undergo massive synapse pruning during early adulthood..."
+  * "Ancient hybridization drove plum diversification across tropical zones..."
+  * "A new algorithm maps which genes interact with transcriptional condensates..."
+  * "The human hypothalamus shows striking sex differences at single-cell resolution..."
+  * "Psilocybin biosynthesis evolved independently at least twice in mushrooms..."
+- Attribution can come later in the sentence or be implicit
+- Mix passive and active voice naturally
 
 ADDITIONAL GUIDELINES:
 - State findings directly without hype
@@ -131,7 +164,6 @@ ADDITIONAL GUIDELINES:
 - Be specific about what the research found
 - Do not start with "New preprint:" or similar throat-clearing
 - Do not use phrases like "This is huge" or "Game-changer"
-- Vary your sentence structure
 - Trust your reader's intelligence
 - NEVER use em-dashes (—) - use commas or periods instead
 
@@ -235,9 +267,11 @@ def generate_post(
     # Load stop_slop rules
     stop_slop_rules = load_stop_slop_rules()
 
-    SINGLE_POST_LIMIT = 220  # Leave room for link
-    THREAD_FIRST_POST_LIMIT = 220
-    THREAD_OTHER_POST_LIMIT = 280
+    # Grapheme limits (Bluesky max is 300)
+    # First post has URL appended, so needs ~65 char buffer
+    SINGLE_POST_LIMIT = BLUESKY_GRAPHEME_LIMIT - URL_BUFFER  # 235 graphemes
+    THREAD_FIRST_POST_LIMIT = BLUESKY_GRAPHEME_LIMIT - URL_BUFFER  # 235 graphemes
+    THREAD_OTHER_POST_LIMIT = BLUESKY_GRAPHEME_LIMIT - 5  # 295 graphemes (small safety margin)
 
     try:
         if thread_mode:
@@ -248,12 +282,13 @@ def generate_post(
             )
             posts = _parse_posts(response_text, thread_mode=True)
 
-            # Validate thread posts
+            # Validate thread posts using grapheme counting
             valid = True
             for i, post in enumerate(posts):
                 limit = THREAD_FIRST_POST_LIMIT if i == 0 else THREAD_OTHER_POST_LIMIT
-                if len(post) > limit:
-                    print(f"Warning: Thread post {i+1} exceeds {limit} chars ({len(post)})")
+                grapheme_count = count_graphemes(post)
+                if grapheme_count > limit:
+                    print(f"Warning: Thread post {i+1} exceeds {limit} graphemes ({grapheme_count})")
                     valid = False
 
             if not valid:
@@ -264,7 +299,17 @@ def generate_post(
                 )
                 posts = _parse_posts(response_text, thread_mode=True)
 
-            return BlueskyPost(posts=posts, is_thread=True)
+            # Final validation and truncation if still too long
+            validated_posts = []
+            for i, post in enumerate(posts):
+                limit = THREAD_FIRST_POST_LIMIT if i == 0 else THREAD_OTHER_POST_LIMIT
+                grapheme_count = count_graphemes(post)
+                if grapheme_count > limit:
+                    print(f"Truncating post {i+1} from {grapheme_count} to {limit} graphemes")
+                    post = truncate_to_graphemes(post, limit)
+                validated_posts.append(post)
+
+            return BlueskyPost(posts=validated_posts, is_thread=True)
 
         else:
             # Try to generate a single post
@@ -274,36 +319,49 @@ def generate_post(
             )
             posts = _parse_posts(response_text, thread_mode=False)
 
-            if posts and len(posts[0]) <= SINGLE_POST_LIMIT:
+            grapheme_count = count_graphemes(posts[0]) if posts else 0
+            if posts and grapheme_count <= SINGLE_POST_LIMIT:
                 # Success - single post fits
                 return BlueskyPost(posts=posts, is_thread=False)
 
             # Post too long - retry with stricter instructions
-            print(f"Post too long ({len(posts[0])} chars), retrying with stricter limit...")
+            print(f"Post too long ({grapheme_count} graphemes), retrying with stricter limit...")
             response_text = _call_claude_for_post(
                 preprint, pdf_content, stop_slop_rules,
                 thread_mode=False, char_limit=SINGLE_POST_LIMIT, retry_attempt=True
             )
             posts = _parse_posts(response_text, thread_mode=False)
 
-            if posts and len(posts[0]) <= SINGLE_POST_LIMIT:
+            grapheme_count = count_graphemes(posts[0]) if posts else 0
+            if posts and grapheme_count <= SINGLE_POST_LIMIT:
                 # Success on retry
                 return BlueskyPost(posts=posts, is_thread=False)
 
             # Still too long - only switch to thread mode if we have PDF content
             # (abstract-only mode should stay as single post)
             if pdf_content:
-                print(f"Post still too long ({len(posts[0])} chars), switching to thread mode...")
+                print(f"Post still too long ({grapheme_count} graphemes), switching to thread mode...")
                 response_text = _call_claude_for_post(
                     preprint, pdf_content, stop_slop_rules,
                     thread_mode=True
                 )
                 posts = _parse_posts(response_text, thread_mode=True)
-                return BlueskyPost(posts=posts, is_thread=True)
+
+                # Validate and truncate thread posts
+                validated_posts = []
+                for i, post in enumerate(posts):
+                    limit = THREAD_FIRST_POST_LIMIT if i == 0 else THREAD_OTHER_POST_LIMIT
+                    post_graphemes = count_graphemes(post)
+                    if post_graphemes > limit:
+                        print(f"Truncating post {i+1} from {post_graphemes} to {limit} graphemes")
+                        post = truncate_to_graphemes(post, limit)
+                    validated_posts.append(post)
+
+                return BlueskyPost(posts=validated_posts, is_thread=True)
             else:
                 # In abstract-only mode, truncate rather than thread
-                print(f"Post too long ({len(posts[0])} chars) but in abstract-only mode, truncating...")
-                truncated = posts[0][:SINGLE_POST_LIMIT - 3] + "..."
+                print(f"Post too long ({grapheme_count} graphemes) but in abstract-only mode, truncating...")
+                truncated = truncate_to_graphemes(posts[0], SINGLE_POST_LIMIT)
                 return BlueskyPost(posts=[truncated], is_thread=False)
 
     except Exception as e:
@@ -325,12 +383,12 @@ if __name__ == "__main__":
             print("\n--- Single Post Mode ---")
             post = generate_post(selected, thread_mode=False)
             if post:
-                print(f"Post ({len(post.text)} chars):")
+                print(f"Post ({count_graphemes(post.text)} graphemes):")
                 print(post.text)
 
             print("\n--- Thread Mode ---")
             thread = generate_post(selected, thread_mode=True)
             if thread:
                 for i, p in enumerate(thread.posts, 1):
-                    print(f"\nPost {i} ({len(p)} chars):")
+                    print(f"\nPost {i} ({count_graphemes(p)} graphemes):")
                     print(p)

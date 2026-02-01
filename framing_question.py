@@ -7,6 +7,7 @@ Runs once per week on a randomly selected day (Tue, Wed, or Thu).
 
 import json
 import random
+import subprocess
 import sys
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -17,6 +18,67 @@ load_dotenv()
 import anthropic
 
 from bluesky_poster import BlueskyPoster
+
+
+def git_commit_and_push(message: str) -> bool:
+    """Commit and push changes to git.
+
+    Args:
+        message: Commit message
+
+    Returns:
+        True if successful, False otherwise
+    """
+    try:
+        repo_dir = Path(__file__).parent
+
+        # Stage the framing question tracker file
+        subprocess.run(
+            ["git", "add", "last_framing_question.json"],
+            cwd=repo_dir,
+            check=True,
+            capture_output=True
+        )
+
+        # Check if there are changes to commit
+        result = subprocess.run(
+            ["git", "diff", "--cached", "--quiet"],
+            cwd=repo_dir,
+            capture_output=True
+        )
+
+        if result.returncode == 0:
+            print("No changes to commit")
+            return True
+
+        # Commit
+        subprocess.run(
+            ["git", "commit", "-m", message],
+            cwd=repo_dir,
+            check=True,
+            capture_output=True
+        )
+        print(f"Committed: {message}")
+
+        # Push
+        subprocess.run(
+            ["git", "push"],
+            cwd=repo_dir,
+            check=True,
+            capture_output=True
+        )
+        print("Pushed to remote")
+
+        return True
+
+    except subprocess.CalledProcessError as e:
+        print(f"Git error: {e}")
+        if e.stderr:
+            print(f"  {e.stderr.decode().strip()}")
+        return False
+    except Exception as e:
+        print(f"Error during git commit/push: {e}")
+        return False
 
 
 LAST_POST_FILE = Path(__file__).parent / "last_posted_preprint.json"
@@ -266,6 +328,9 @@ def main():
                 # Record that we posted this week
                 save_framing_posted()
                 print(f"Recorded framing question for week {get_week_number()}")
+
+                # Commit and push to git
+                git_commit_and_push(f"Framing question for week {get_week_number()}")
             else:
                 print("Failed to post")
                 sys.exit(1)

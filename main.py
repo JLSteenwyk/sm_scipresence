@@ -9,6 +9,7 @@ Usage:
 """
 
 import argparse
+import subprocess
 import sys
 from pathlib import Path
 
@@ -23,6 +24,82 @@ from figure_extractor import extract_figure_from_pdf
 from bluesky_poster import BlueskyPoster
 from framing_question import save_preprint_for_followup
 from posting_history import save_to_history
+
+
+def git_commit_and_push(preprint_title: str) -> bool:
+    """Commit and push changes to git after a successful post.
+
+    Args:
+        preprint_title: Title of the posted preprint (for commit message)
+
+    Returns:
+        True if successful, False otherwise
+    """
+    try:
+        # Get the repo directory
+        repo_dir = Path(__file__).parent
+
+        # Files that get updated after posting
+        files_to_commit = [
+            "posting_history.json",
+            "posted_preprints.json",
+            "last_posted_preprint.json",
+        ]
+
+        # Stage the files
+        for filename in files_to_commit:
+            filepath = repo_dir / filename
+            if filepath.exists():
+                subprocess.run(
+                    ["git", "add", filename],
+                    cwd=repo_dir,
+                    check=True,
+                    capture_output=True
+                )
+
+        # Check if there are changes to commit
+        result = subprocess.run(
+            ["git", "diff", "--cached", "--quiet"],
+            cwd=repo_dir,
+            capture_output=True
+        )
+
+        if result.returncode == 0:
+            print("No changes to commit")
+            return True
+
+        # Create commit message with truncated title
+        short_title = preprint_title[:50] + "..." if len(preprint_title) > 50 else preprint_title
+        commit_message = f"Post: {short_title}"
+
+        # Commit
+        subprocess.run(
+            ["git", "commit", "-m", commit_message],
+            cwd=repo_dir,
+            check=True,
+            capture_output=True
+        )
+        print(f"Committed: {commit_message}")
+
+        # Push
+        subprocess.run(
+            ["git", "push"],
+            cwd=repo_dir,
+            check=True,
+            capture_output=True
+        )
+        print("Pushed to remote")
+
+        return True
+
+    except subprocess.CalledProcessError as e:
+        print(f"Git error: {e}")
+        if e.stderr:
+            print(f"  {e.stderr.decode().strip()}")
+        return False
+    except Exception as e:
+        print(f"Error during git commit/push: {e}")
+        return False
 
 
 def main():
@@ -233,6 +310,14 @@ Examples:
                     "authors": selected.authors,
                 })
                 print("Saved to posting history")
+
+                # Commit and push to git
+                print("\n" + "-" * 40)
+                print("Committing and pushing to git...")
+                if git_commit_and_push(selected.title):
+                    print("Git sync complete")
+                else:
+                    print("Warning: Git sync failed (post was still successful)")
             else:
                 print("\nFailed to post to Bluesky")
                 sys.exit(1)

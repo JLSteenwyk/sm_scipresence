@@ -1,0 +1,17 @@
+Collecting grapheme
+  Downloading grapheme-0.6.0.tar.gz (207 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 207.3/207.3 kB 6.5 MB/s eta 0:00:00
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: grapheme
+  Building wheel for grapheme (pyproject.toml): started
+  Building wheel for grapheme (pyproject.toml): finished with status 'done'
+  Created wheel for grapheme: filename=grapheme-0.6.0-py3-none-any.whl size=210137 sha256=733cc68eb4b9a7c93e1823e537157ec512fa776df57e8ed93b1c8a064507e062
+  Stored in directory: /home/jlsteenwyk/.cache/pip/wheels/5b/aa/3b/d94434910f5e19ac7f8aa6523d74a46fe06bfcbc7e4b26caf6
+Successfully built grapheme
+Installing collected packages: grapheme
+Successfully installed grapheme-0.6.0
