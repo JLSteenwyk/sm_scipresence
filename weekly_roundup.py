@@ -15,6 +15,7 @@ load_dotenv()
 import anthropic
 
 from bluesky_poster import BlueskyPoster
+from twitter_poster import TwitterPoster
 from posting_history import get_posts_from_last_n_days
 
 
@@ -255,16 +256,31 @@ def main():
             uris = poster.post_thread(thread, link_urls=link_urls)
 
             if uris:
-                print(f"\nPosted roundup thread successfully!")
+                print(f"\nPosted roundup thread to Bluesky!")
                 for i, uri in enumerate(uris, 1):
                     print(f"  Post {i}: {uri}")
             else:
-                print("Failed to post thread")
+                print("Failed to post thread to Bluesky")
                 sys.exit(1)
 
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"Bluesky error: {e}")
             sys.exit(1)
+
+        # Post to Twitter (non-blocking)
+        print("\nPosting thread to Twitter...")
+        try:
+            twitter_poster = TwitterPoster()
+            tweet_ids = twitter_poster.post_thread(thread, link_urls=link_urls)
+
+            if tweet_ids:
+                print(f"\nPosted roundup thread to Twitter!")
+                for i, tid in enumerate(tweet_ids, 1):
+                    print(f"  Tweet {i}: {tid}")
+            else:
+                print("Warning: Failed to post thread to Twitter")
+        except Exception as e:
+            print(f"Warning: Twitter posting failed: {e}")
 
     print("\n" + "=" * 60)
     print("Done!")

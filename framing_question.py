@@ -18,6 +18,7 @@ load_dotenv()
 import anthropic
 
 from bluesky_poster import BlueskyPoster
+from twitter_poster import TwitterPoster
 
 
 def git_commit_and_push(message: str) -> bool:
@@ -330,7 +331,25 @@ def main():
                 uri = poster.post_single(question)
 
             if uri:
-                print(f"Posted successfully: {uri}")
+                print(f"Posted to Bluesky: {uri}")
+
+                # Post to Twitter (non-blocking)
+                print("\nPosting to Twitter...")
+                try:
+                    twitter_poster = TwitterPoster()
+                    twitter_last_id = preprint.get("twitter_last_tweet_id")
+                    if twitter_last_id:
+                        print(f"Replying to tweet: {twitter_last_id}")
+                        twitter_poster.post_reply(
+                            text=question,
+                            reply_to_tweet_id=twitter_last_id,
+                        )
+                    else:
+                        print("No original tweet ID found, posting as standalone")
+                        twitter_poster.post_single(question)
+                except Exception as e:
+                    print(f"Warning: Twitter posting failed: {e}")
+
                 # Record that we posted this week
                 save_framing_posted()
                 print(f"Recorded framing question for week {get_week_number()}")
@@ -338,11 +357,11 @@ def main():
                 # Commit and push to git
                 git_commit_and_push(f"Framing question for week {get_week_number()}")
             else:
-                print("Failed to post")
+                print("Failed to post to Bluesky")
                 sys.exit(1)
 
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"Bluesky error: {e}")
             sys.exit(1)
 
     print("\n" + "=" * 60)

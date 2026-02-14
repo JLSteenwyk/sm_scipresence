@@ -1,0 +1,18 @@
+Collecting tweepy
+  Downloading tweepy-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting oauthlib<4,>=3.2.0 (from tweepy)
+  Downloading oauthlib-3.3.1-py3-none-any.whl.metadata (7.9 kB)
+Requirement already satisfied: requests<3,>=2.27.0 in ./venv/lib/python3.12/site-packages (from tweepy) (2.32.5)
+Collecting requests-oauthlib<3,>=1.2.0 (from tweepy)
+  Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl.metadata (11 kB)
+Requirement already satisfied: charset_normalizer<4,>=2 in ./venv/lib/python3.12/site-packages (from requests<3,>=2.27.0->tweepy) (3.4.4)
+Requirement already satisfied: idna<4,>=2.5 in ./venv/lib/python3.12/site-packages (from requests<3,>=2.27.0->tweepy) (3.11)
+Requirement already satisfied: urllib3<3,>=1.21.1 in ./venv/lib/python3.12/site-packages (from requests<3,>=2.27.0->tweepy) (2.6.3)
+Requirement already satisfied: certifi>=2017.4.17 in ./venv/lib/python3.12/site-packages (from requests<3,>=2.27.0->tweepy) (2026.1.4)
+Downloading tweepy-4.16.0-py3-none-any.whl (98 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 98.8/98.8 kB 3.7 MB/s eta 0:00:00
+Downloading oauthlib-3.3.1-py3-none-any.whl (160 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 160.1/160.1 kB 8.7 MB/s eta 0:00:00
+Downloading requests_oauthlib-2.0.0-py2.py3-none-any.whl (24 kB)
+Installing collected packages: oauthlib, requests-oauthlib, tweepy
+Successfully installed oauthlib-3.3.1 requests-oauthlib-2.0.0 tweepy-4.16.0

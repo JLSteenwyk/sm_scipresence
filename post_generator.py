@@ -158,19 +158,11 @@ MAX_PDF_SIZE_BYTES = 10 * 1024 * 1024
 def download_pdf(url: str) -> Optional[bytes]:
     """Download PDF from URL and return bytes."""
     try:
-        response = requests.get(url, timeout=60, headers={
+        response = requests.get(url, timeout=120, headers={
             "User-Agent": "BioSkyPoster/1.0 (Academic Research Bot)"
         })
         response.raise_for_status()
-        content = response.content
-
-        # Check if PDF is too large for Claude API
-        if len(content) > MAX_PDF_SIZE_BYTES:
-            print(f"PDF too large ({len(content) / 1024 / 1024:.1f} MB > {MAX_PDF_SIZE_BYTES / 1024 / 1024:.0f} MB limit)")
-            print("Will use abstract-only mode for post generation")
-            return None
-
-        return content
+        return response.content
     except requests.RequestException as e:
         print(f"Error downloading PDF: {e}")
         return None
@@ -351,6 +343,9 @@ def generate_post(
 
     if pdf_content is None:
         print("Failed to download PDF, falling back to abstract-only mode")
+    elif len(pdf_content) > MAX_PDF_SIZE_BYTES:
+        print(f"PDF too large for Claude ({len(pdf_content) / 1024 / 1024:.1f} MB), using abstract-only mode for post generation")
+        pdf_content = None
 
     # Load stop_slop rules
     stop_slop_rules = load_stop_slop_rules()

@@ -19,6 +19,7 @@ from dotenv import load_dotenv
 
 from biorxiv_scraper import Preprint
 from bluesky_poster import BlueskyPoster
+from twitter_poster import TwitterPoster
 from figure_extractor import extract_figure_from_pdf, ExtractedFigure
 from post_generator import generate_post, count_graphemes
 
@@ -230,7 +231,7 @@ Examples:
 
     # Confirm before posting
     print("\n")
-    response = input("Post to Bluesky? [y/N]: ").strip().lower()
+    response = input("Post to Bluesky and Twitter? [y/N]: ").strip().lower()
     if response != "y":
         print("Cancelled.")
         return
@@ -257,6 +258,25 @@ Examples:
     else:
         print("\nError: Failed to post to Bluesky")
         sys.exit(1)
+
+    # Post to Twitter (non-blocking)
+    print("\nPosting to Twitter...")
+    try:
+        twitter_poster = TwitterPoster()
+        tweet_ids = twitter_poster.post(
+            bluesky_post=post,
+            link_url=args.manuscript_url,
+            image=figure,
+            image_alt=f"Figure from: {title[:100]}"
+        )
+        if tweet_ids:
+            print("Success! Posted to Twitter:")
+            for tid in tweet_ids:
+                print(f"  {tid}")
+        else:
+            print("Warning: Failed to post to Twitter (Bluesky post was successful)")
+    except Exception as e:
+        print(f"Warning: Twitter posting failed: {e} (Bluesky post was successful)")
 
 
 if __name__ == "__main__":

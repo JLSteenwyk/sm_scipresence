@@ -119,6 +119,36 @@
       "authors": "Yang, Z.; Ji, S.; Ivanov, K.; Kadav, P.; Song, M.; Gozali, L.; Parsa, S.; Behr, B.; Hynes, M.",
       "posted_at": "2026-02-14T09:54:49.688666",
       "posted_date": "2026-02-14"
+    },
+    {
+      "doi": "10.1101/2022.10.27.514143",
+      "title": "Limited codiversification of the gut microbiota with humans",
+      "abstract": "Gut bacteria exhibit striking variation across different human populations, but the evolutionary forces that have shaped this diversity are less well understood. Recent work has argued that many species of gut bacteria have codiversified with modern humans, based on the phylogenetic correlations between human and microbial genomes. Here we reanalyze these data and show that the correlations between human and microbial phylogenies are often substantially weaker than between unlinked human chromosomes, and that similar correlations can arise through geographic structure alone. These results suggest that traditional codiversification has been limited in recent human history, and highlight alternative strategies for quantifying the extent of human-microbe coevolution.",
+      "category": "evolutionary biology",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2022.10.27.514143",
+      "authors": "Good, B. H.",
+      "posted_at": "2026-02-14T10:37:45.368782",
+      "posted_date": "2026-02-14"
+    },
+    {
+      "doi": "10.1101/2023.10.04.558359",
+      "title": "Hypoxic injury triggers maladaptive repair in human kidney organoids",
+      "abstract": "Acute kidney injury (AKI) is a common clinical disorder linked to high rates of illness and death. Ischemia is a leading cause of AKI, which can result in chronic kidney disease (CKD) through maladaptive repair marked by impaired epithelial regeneration, inflammation, and metabolic dysregulation. There are no targeted therapies for AKI or to prevent progression to CKD and insight into human disease mechanisms remains limited. Here we show that human kidney organoids recapitulate key molecular and metabolic signatures of AKI and maladaptive repair in response to hypoxic injury. Transcriptional, proteomic, and metabolomic profiling revealed tubular injury, cell death, cell cycle arrest and metabolic reprogramming in organoids exposed to hypoxia. Following return to normoxic conditions, injured organoids had increased signatures of TNF and NF-{kappa}B signalling pathways and S100A8/9, associated with maladaptive repair. Single cell RNA sequencing localized AKI and maladaptive repair markers including GDF15, MMP7, ICAM1, IL32, SPP1, C3 and CCN1 to injured tubules. Metabolic phenotypes linked to CKD were also evident, including dysregulated gluconeogenesis, altered amino acid metabolism and lipid peroxidation. iPSC-derived macrophages incorporated into organoids displayed a robust activation and inflammatory response to hypoxia. Spatial transcriptomics revealed a shift from a tissue resident-like to inflammatory macrophage states and localized effects on tubular injury and inflammation. This multi-omic analysis defines conserved mechanisms of human ischemic AKI and maladaptive repair, highlighting new opportunities to test therapeutics and model immune-mediated interactions.",
+      "category": "systems biology",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2023.10.04.558359",
+      "authors": "Nunez-Nescolarde, A. B.; Liao, Y.; Perlaza-Jimenez, L.; Piran, M.; Cheng, Z.; Barlow, C. K.; Steele, J. R.; Deveson, D.; Lee, H.-C.; Moreau, J. L. M.; Li, J.; Schittenhelm, R. B.; Wells, C. A.; Shi, W.; Nikolic-Paterson, D. J.; Combes, A. N.",
+      "posted_at": "2026-02-14T10:46:06.974440",
+      "posted_date": "2026-02-14"
+    },
+    {
+      "doi": "10.1101/2024.07.24.604987",
+      "title": "DNA O-MAP uncovers the molecular neighborhoods associated with specific genomic loci",
+      "abstract": "The accuracy of crucial nuclear processes such as transcription, replication, and repair, depends on the local composition of chromatin and the regulatory proteins that reside there. Understanding these DNA-protein interactions at the level of specific genomic loci has remained challenging due to technical limitations. Here, we introduce a method termed \"DNA O-MAP\", which uses programmable peroxidase-conjugated oligonucleotide probes to biotinylate nearby proteins. We show that DNA O-MAP can be coupled with sample multiplexed quantitative proteomics, targeted chemical perturbations, and next-generation sequencing to quantify DNA-protein and DNA-DNA interactions at specific genomic loci. Furthermore, we establish that DNA O-MAP is applicable to both repetitive and unique genomic loci of varying sizes (kilobases to megabases), and that DNA O-MAP can measure proximal molecular effectors in a homolog-specific manner.",
+      "category": "systems biology",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.07.24.604987",
+      "authors": "Liu, Y.; McGann, C. D.; Herlihy, C. P.; Krebs, M.; Perkins, T. A.; Fields, R.; Camplisson, C. K.; Nwizugbo, D.; Lin, Q.; Longhi, N.; Hsu, C.; Avanessian, S.; Tsue, A. F.; Kania, E. E.; Shechner, D. M.; Beliveau, B. J.; Schweppe, D. K.",
+      "posted_at": "2026-02-14T10:51:05.760772",
+      "posted_date": "2026-02-14"
     }
   ]
 }
