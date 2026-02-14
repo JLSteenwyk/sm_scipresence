@@ -27,14 +27,102 @@ def count_graphemes(text: str) -> int:
     return grapheme.length(text)
 
 
-def truncate_to_graphemes(text: str, max_graphemes: int) -> str:
-    """Truncate text to a maximum number of graphemes."""
+def split_at_boundary(text: str, max_graphemes: int) -> tuple:
+    """Split text at a sentence boundary, returning (kept, remainder).
+
+    Finds the last complete sentence that fits within the limit. If no sentence
+    boundary is found, falls back to the last word boundary. Never appends
+    ellipses or cuts mid-sentence.
+
+    Returns:
+        Tuple of (text that fits within limit, leftover text).
+        If the text already fits, remainder is an empty string.
+    """
     if count_graphemes(text) <= max_graphemes:
-        return text
-    # Use grapheme slicing to get the first max_graphemes-3, then add "..."
+        return text, ""
+
     grapheme_list = list(grapheme.graphemes(text))
-    truncated = "".join(grapheme_list[:max_graphemes - 3]) + "..."
-    return truncated
+    candidate = "".join(grapheme_list[:max_graphemes])
+    full_remainder = "".join(grapheme_list[max_graphemes:])
+
+    def _make_remainder(kept_end_idx: int) -> str:
+        """Build remainder from what was cut, preserving the full original text."""
+        full_text = candidate + full_remainder
+        return full_text[kept_end_idx:].strip()
+
+    # Try to find the last sentence-ending punctuation (.!?) followed by space/newline
+    for end_char in [". ", ".\n", "? ", "?\n", "! ", "!\n"]:
+        idx = candidate.rfind(end_char)
+        if idx != -1:
+            kept = candidate[:idx + 1].rstrip()
+            return kept, _make_remainder(idx + 1)
+
+    # Check if the candidate ends right at a sentence boundary
+    if candidate.rstrip().endswith((".", "?", "!")):
+        kept = candidate.rstrip()
+        return kept, full_remainder.strip()
+
+    # No sentence boundary found - fall back to last word boundary
+    last_space = candidate.rfind(" ")
+    if last_space > 0:
+        # Walk back to find a sentence ending before this word boundary
+        word_truncated = candidate[:last_space].rstrip()
+        for end_char in [".", "?", "!"]:
+            idx = word_truncated.rfind(end_char)
+            if idx != -1:
+                kept = word_truncated[:idx + 1].rstrip()
+                return kept, _make_remainder(idx + 1)
+        # No sentence boundary at all - split at word boundary
+        return word_truncated, _make_remainder(last_space)
+
+    # Absolute fallback (single very long word)
+    return candidate, full_remainder.strip()
+
+
+def truncate_to_graphemes(text: str, max_graphemes: int) -> str:
+    """Truncate text to a maximum number of graphemes at a sentence boundary.
+
+    Convenience wrapper around split_at_boundary that discards the remainder.
+    """
+    kept, _ = split_at_boundary(text, max_graphemes)
+    return kept
+
+
+def validate_thread_posts(posts: list, first_post_limit: int, other_post_limit: int) -> list:
+    """Validate and fix thread posts so every post fits within its grapheme limit.
+
+    If a post is too long, it is split at a sentence/word boundary and the
+    remainder is prepended to the next post (or appended as a new post).
+    """
+    validated = []
+    carry = ""
+
+    for i, post in enumerate(posts):
+        # Prepend any leftover text from the previous post
+        if carry:
+            post = carry + " " + post
+            carry = ""
+
+        limit = first_post_limit if i == 0 else other_post_limit
+        if count_graphemes(post) > limit:
+            print(f"Splitting post {i+1} at sentence boundary ({count_graphemes(post)} > {limit} graphemes)")
+            kept, carry = split_at_boundary(post, limit)
+            validated.append(kept)
+        else:
+            validated.append(post)
+
+    # If there's still leftover text after the last post, add new posts
+    while carry:
+        limit = other_post_limit
+        if count_graphemes(carry) <= limit:
+            validated.append(carry)
+            carry = ""
+        else:
+            print(f"Adding overflow post ({count_graphemes(carry)} graphemes)")
+            kept, carry = split_at_boundary(carry, limit)
+            validated.append(kept)
+
+    return validated
 
 
 def load_stop_slop_rules() -> str:
@@ -293,21 +381,25 @@ def generate_post(
 
             if not valid:
                 print("Regenerating thread with stricter limits...")
-                response_text = _call_claude_for_post(
-                    preprint, pdf_content, stop_slop_rules,
-                    thread_mode=True
-                )
-                posts = _parse_posts(response_text, thread_mode=True)
+                for retry in range(2):
+                    response_text = _call_claude_for_post(
+                        preprint, pdf_content, stop_slop_rules,
+                        thread_mode=True
+                    )
+                    posts = _parse_posts(response_text, thread_mode=True)
+                    # Check if all posts now fit
+                    all_fit = all(
+                        count_graphemes(p) <= (THREAD_FIRST_POST_LIMIT if i == 0 else THREAD_OTHER_POST_LIMIT)
+                        for i, p in enumerate(posts)
+                    )
+                    if all_fit:
+                        break
+                    print(f"Retry {retry + 1} still has oversized posts, {'retrying' if retry == 0 else 'will truncate at sentence boundary'}...")
 
-            # Final validation and truncation if still too long
-            validated_posts = []
-            for i, post in enumerate(posts):
-                limit = THREAD_FIRST_POST_LIMIT if i == 0 else THREAD_OTHER_POST_LIMIT
-                grapheme_count = count_graphemes(post)
-                if grapheme_count > limit:
-                    print(f"Truncating post {i+1} from {grapheme_count} to {limit} graphemes")
-                    post = truncate_to_graphemes(post, limit)
-                validated_posts.append(post)
+            # Final validation — split oversized posts and carry remainder forward
+            validated_posts = validate_thread_posts(
+                posts, THREAD_FIRST_POST_LIMIT, THREAD_OTHER_POST_LIMIT
+            )
 
             return BlueskyPost(posts=validated_posts, is_thread=True)
 
@@ -347,22 +439,20 @@ def generate_post(
                 )
                 posts = _parse_posts(response_text, thread_mode=True)
 
-                # Validate and truncate thread posts
-                validated_posts = []
-                for i, post in enumerate(posts):
-                    limit = THREAD_FIRST_POST_LIMIT if i == 0 else THREAD_OTHER_POST_LIMIT
-                    post_graphemes = count_graphemes(post)
-                    if post_graphemes > limit:
-                        print(f"Truncating post {i+1} from {post_graphemes} to {limit} graphemes")
-                        post = truncate_to_graphemes(post, limit)
-                    validated_posts.append(post)
+                # Validate — split oversized posts and carry remainder forward
+                validated_posts = validate_thread_posts(
+                    posts, THREAD_FIRST_POST_LIMIT, THREAD_OTHER_POST_LIMIT
+                )
 
                 return BlueskyPost(posts=validated_posts, is_thread=True)
             else:
-                # In abstract-only mode, truncate rather than thread
-                print(f"Post too long ({grapheme_count} graphemes) but in abstract-only mode, truncating...")
-                truncated = truncate_to_graphemes(posts[0], SINGLE_POST_LIMIT)
-                return BlueskyPost(posts=[truncated], is_thread=False)
+                # In abstract-only mode, split into a thread to preserve all content
+                print(f"Post too long ({grapheme_count} graphemes) in abstract-only mode, splitting into thread...")
+                validated_posts = validate_thread_posts(
+                    posts, THREAD_FIRST_POST_LIMIT, THREAD_OTHER_POST_LIMIT
+                )
+                is_thread = len(validated_posts) > 1
+                return BlueskyPost(posts=validated_posts, is_thread=is_thread)
 
     except Exception as e:
         print(f"Error generating post: {e}")

@@ -247,6 +247,12 @@ Remember: under 280 characters, genuine curiosity, invite discussion from releva
             )
             post_text = response.content[0].text.strip()
 
+        # Final safety: truncate at sentence boundary if still too long
+        if len(post_text) > 280:
+            print(f"Post still too long after retry ({len(post_text)} chars), truncating at sentence boundary")
+            from post_generator import truncate_to_graphemes
+            post_text = truncate_to_graphemes(post_text, 280)
+
         return post_text
 
     except Exception as e:

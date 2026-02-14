@@ -125,13 +125,14 @@ Remember: 2-3 posts, each under 280 characters, separated by ---"""
         # Parse the posts
         thread_posts = [p.strip() for p in content.split("---") if p.strip()]
 
-        # Validate lengths
-        valid_posts = []
-        for post in thread_posts:
-            if len(post) > 280:
-                print(f"Warning: Post too long ({len(post)} chars), will be truncated")
-                post = post[:277] + "..."
-            valid_posts.append(post)
+        # Validate lengths — split oversized posts, carrying remainder forward
+        from post_generator import validate_thread_posts
+        ROUNDUP_LIMIT = 280
+        valid_posts = validate_thread_posts(
+            thread_posts,
+            first_post_limit=ROUNDUP_LIMIT,
+            other_post_limit=ROUNDUP_LIMIT,
+        )
 
         return valid_posts if valid_posts else None
 

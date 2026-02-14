@@ -59,6 +59,66 @@
       "authors": "Liu, Y.; Lai, J.; Markowski, M. C.; Antonarakis, E. S.; De Marzo, A. M.; Yegnasubramanian, S.; Wood, L. D.; Sena, L. A.; Karchin, R.",
       "posted_at": "2026-01-29T08:22:15.038108",
       "posted_date": "2026-01-29"
+    },
+    {
+      "doi": "10.1101/2024.02.01.578210",
+      "title": "3D-super-enhancers are condensate-associated cis-regulatory communities",
+      "abstract": "Transcription proteins are concentrated at nuclear transcriptional condensates. These condensates contain cis-regulatory elements (CREs), including enhancers and promoters, that are thought to regulate genes in the same condensate. The roles of condensates are of great current interest, but research into their function is limited by an inability to comprehensively identify their associated CREs. Here, we present a conceptual framework and algorithm, BOUQUET, for integrating genome topology, chromatin occupancy, and graph theory to associate CREs and transcription protein machinery with target genes and identify exceptionally protein-rich communities that interact with condensates. BOUQUET uncovers surprising quantitative correlations between community protein accumulation and gene expression phenotypes by combining accurate CRE-gene assignment with co-activator binding profiles. A small subset of communities, which we call \"3D-super-enhancers,\" is exceptionally protein-rich. BOUQUET-predicted 3D-SEs are comparable in number to co-activator nuclear puncta, and all genes known to interact with co-activator condensates in embryonic stem cells are within 3D-SEs. 3D-SEs are enriched for association with cell identity genes across mammalian tissues. Microscopy analyses show frequent co-localization and co-expression of genes from the same 3D-SE within a single co-activator punctum, suggesting 3D-SE components interact with co-activator condensates. Thus 3D-SEs correspond to co-activator puncta, which nominates additional condensate-associated genes and CREs.",
+      "category": "molecular biology",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.02.01.578210",
+      "authors": "Lv, J.; Maher, K. A.; Dong, L.; Valentine, V.; Staller, S.; Veluchamy, A.; Tian, L.; Kim, Y.; Ju, B.; Valentine, M.; Easton, J.; Pounds, S. B.; Burden, S.; Abraham, B.",
+      "posted_at": "2026-02-04T08:23:06.003320",
+      "posted_date": "2026-02-04"
+    },
+    {
+      "doi": "10.1101/2024.04.03.587887",
+      "title": "Can ecological interactions drive evolutionary outcomes? Evidence from insect host shifts between parasitic and non-parasitic plants",
+      "abstract": "Phytophagous insects have specialized on virtually every plant lineage. Parasitic plants, however, are uncommon hosts. Among insects, only a single lineage of weevils, the Smicronychini, has successfully radiated on both parasitic and non-parasitic plants in a large panel of distantly related Asterid families. This unusual pattern suggests that major host plant shifts have occurred over the course of their diversification. Through the analysis of a phylogenomic dataset, we reconstruct for the first time their evolutionary history and ancestral host plant associations. Our results show that independent host plant shifts occurred both from parasitic to non-parasitic hosts and between distinct parasitic lineages. These results suggest that host shift mechanisms can be driven by ecological opportunities provided by plant-plant interactions. This first evidence of extreme insect host plant shifts apparently mediated by parasitic plant-plant interactions emphasizes the core importance of ecological interactions as driving forces behind insect host plant shifts.",
+      "category": "evolutionary biology",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.04.03.587887",
+      "authors": "Zelvelder, B.; Kergoat, G. J.; Benoit, L.; Tsuchida, T.; Haran, J.; Allio, R.",
+      "posted_at": "2026-02-10T08:31:48.553125",
+      "posted_date": "2026-02-10"
+    },
+    {
+      "doi": "10.1101/2021.12.21.473625",
+      "title": "From climate warming to accelerated cellular ageing: an experimental heating study in a wild passerine bird",
+      "abstract": "Climate change is increasing both the average ambient temperature and the frequency and severity of heat waves. While direct mortality induced by heat waves is increasingly reported, sub-lethal effects are also likely to impact wild populations. We hypothesized that accelerated ageing could be a cost of being exposed to higher ambient temperature, especially in early-life when thermoregulatory capacities are not fully developed. We tested this hypothesis in wild great tits (Parus major) by experimentally increasing nest box temperature by ca. 2C during postnatal growth and measuring telomere length, a biomarker of cellular ageing predictive of survival prospects in many bird species. While increasing early-life temperature had no detectable effect on growth or survival to fledging, it accelerated telomere shortening, and although non-significantly, reduced medium-term survival from 34% to 19%. Heat-induced telomere shortening was not explained by oxidative stress, but more likely by an increase in energy demand (i.e. higher thyroid hormones levels, increased expression of glucocorticoid receptor, increased mitochondrial density) leading to a reduction in telomere maintenance mechanisms (i.e. non-significant decrease in the gene expression of telomerase and protective shelterin). Our results thus suggest that climate warming can affect rate of ageing in wild birds, with potential impact on population dynamics and persistence.",
+      "category": "physiology",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2021.12.21.473625",
+      "authors": "STIER, A.; Hsu, B.-Y.; Cossin-Sevrin, N.; Garcin, N.; Ruuskanen, S.",
+      "posted_at": "2026-02-11T08:21:24.476541",
+      "posted_date": "2026-02-11"
+    },
+    {
+      "doi": "10.1101/2024.08.31.610628",
+      "title": "Host and antibiotic jointly select for greater virulence in Staphylococcus aureus",
+      "abstract": "Widespread antibiotic usage has resulted in the rapid evolution of drug-resistant bacterial pathogens and poses significant threats to public health. Resolving how pathogens respond to antibiotics under different contexts is critical for understanding disease emergence and evolution going forward. The impact of antibiotics has been demonstrated most directly through in vitro pathogen passaging experiments. Independent from antibiotic selection, interactions with hosts have also altered the evolutionary trajectories and fitness landscapes of pathogens, shaping infectious disease outcomes. However, it is unclear how interactions between hosts and antibiotics impact the evolution of pathogen virulence. Here, we evolved and re-sequenced Staphylococcus aureus, a major bacterial pathogen, varying exposure to host and antibiotics to tease apart the contributions of these selective pressures on pathogen adaptation. After 12 passages, S. aureus evolving in Caenorhabditis elegans nematodes exposed to a sub-minimum inhibitory concentration of antibiotic (oxacillin) became highly virulent, regardless of whether the ancestral pathogen was methicillin-resistant (MRSA) or methicillin-sensitive (MSSA). Host and antibiotic exposure selected for reduced drug susceptibility in MSSA lineages while increasing MRSA total growth outside hosts. We identified mutations in genes involved in complex regulatory networks linking virulence and metabolism, including codY, agr, and gdpP, suggesting that rapid adaptation to infect hosts may have pleiotropic effects. In particular, MSSA populations under selection from host and antibiotic accumulated mutations in the global regulator gene codY, which controls biofilm formation in S. aureus. These populations had indeed evolved more robust biofilms--a trait linked to both virulence and antibiotic resistance--suggesting evolution of one trait can confer multiple adaptive benefits. Mutations that arose in these genes were also enriched in clinical isolates associated with systemic infections in humans. Despite evolving in similar environments, MRSA and MSSA populations--differing only in the presence of an intact accessory gene (mecA)--proceeded on divergent evolutionary paths, with MSSA populations exhibiting more similarities across replicate populations. Our results underscore the importance of considering the host context as a critical driver of pathogen traits like virulence and antibiotic resistance.",
+      "category": "evolutionary biology",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.08.31.610628",
+      "authors": "Su, M.; Hoang, K.; Penley, M.; Davis, M.; Gresham, J.; Morran, L.; Read, T.",
+      "posted_at": "2026-02-13T08:24:00.081860",
+      "posted_date": "2026-02-13"
+    },
+    {
+      "doi": "10.1101/2024.05.28.596156",
+      "title": "Likelihood-based fine-tuning of protein language models for few-shot fitness prediction and design",
+      "abstract": "Machine learning models trained on measurements of protein functional properties are widely used to accelerate laboratory-based protein design campaigns. To maximise the signal that can be extracted from limited experimental data, sequence embeddings produced by protein language models (PLMs) are often used as the basis of supervised fitness predictors. However, embedding-based predictors do not directly exploit the distributional information encoded in PLM likelihoods after self-supervised or generative pretraining on natural protein sequences. In contrast, likelihood-based fine-tuning approaches exploit this prior knowledge by directly updating pretrained PLM likelihoods to reflect observed fitness differences between sequences. While likelihood-based fine-tuning methods have been proposed previously, a conclusive comparison of their performance against state-of-the-art embedding-based methods has been lacking. To address this gap, we conduct a comprehensive empirical evaluation of both fine-tuning strategies on a representative set of protein fitness datasets from the ProteinGym benchmark. To ensure our evaluation is applicable across different PLM classes, we develop a simple, unified framework for likelihood-based fine-tuning that applies to models trained with various objectives. Across model classes and fitness datasets, likelihood-based fine-tuning consistently outperforms embedding-based methods previously reported as state-of-the-art, with the largest gains in low-data settings. Finally, to highlight the practical relevance of these findings, we demonstrate that the best-performing fine-tuning strategies can substantially improve the maximal fitness of designed sequences in multi-round in silico optimisation campaigns.",
+      "category": "bioinformatics",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.05.28.596156",
+      "authors": "Hawkins-Hooker, A.; Surana, S.; Simons, J.; Kmec, J.; Bent, O.; Duckworth, P.",
+      "posted_at": "2026-02-14T08:37:19.760552",
+      "posted_date": "2026-02-14"
+    },
+    {
+      "doi": "10.1101/2022.03.15.484504",
+      "title": "Functional Separation of mRNA Domains Coordinates Pluripotent Cell Behavior",
+      "abstract": "Differential expression of mRNA coding sequences (CDSs) and 3untranslated regions (UTRs) is widespread, yet whether these domains contribute independently to cellular function remains unclear. Here, using Nanog as a model, we find that Nanog mRNA domain usage is spatially organized in mouse and human pluripotent cells and in the blastocyst, with cells enriched in 3UTR transcripts marking colony borders and cells enriched for the Nanog CDS located interior. Functional perturbation reveals a marked asymmetry between mRNA domains. Loss of the Nanog 3UTR leads to defects in colony architecture, cell spreading and morphogenetic behavior, accompanied by decreased extracellular matrix modeling gene expression and ROCK dependent cytoskeletal organization. In contrast, deletion of the Nanog CDS primarily disrupts epithelial polarity-associated transcriptional programs and the expression of chromatin regulators, consisted with a dominant role for the Nanog protein in transcriptional and epigenetic control. These domain specific effects are not redundant but instead reflect separable regulatory activities encoded within a single transcript. Together, these findings demonstrate that distinct regions of a single mRNA can encode separable and asymmetric biological functions, revealing mRNA domain usage as a distinct regulatory layer through which genes can encode multiple biological outputs beyond protein coding capacity.",
+      "category": "cell biology",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2022.03.15.484504",
+      "authors": "Yang, Z.; Ji, S.; Ivanov, K.; Kadav, P.; Song, M.; Gozali, L.; Parsa, S.; Behr, B.; Hynes, M.",
+      "posted_at": "2026-02-14T09:54:49.688666",
+      "posted_date": "2026-02-14"
     }
   ]
 }
