@@ -33,7 +33,7 @@ def load_stop_slop_rules() -> str:
     return "\n\n".join(rules)
 
 
-def generate_roundup(posts: list, dry_run: bool = False) -> list[str] | None:
+def generate_roundup(posts: list, dry_run: bool = False) -> tuple[list[str], list[str | None]] | None:
     """Generate a weekly roundup thread using Claude.
 
     Args:
@@ -41,7 +41,8 @@ def generate_roundup(posts: list, dry_run: bool = False) -> list[str] | None:
         dry_run: If True, skip API call validation
 
     Returns:
-        List of post strings for a thread, or None on error
+        Tuple of (thread_posts, link_urls) or None on error.
+        link_urls[i] is the URL for thread_posts[i], or None if no link.
     """
     if not posts:
         return None
@@ -61,7 +62,7 @@ def generate_roundup(posts: list, dry_run: bool = False) -> list[str] | None:
 
     posts_text = "\n".join(post_summaries)
 
-    system_prompt = f"""You are a science journalist on Bluesky writing a weekly roundup of preprints you highlighted this week. Your goal is to create a brief, engaging summary thread.
+    system_prompt = f"""You are a science journalist on Bluesky writing a weekly roundup of preprints you highlighted this week. Your goal is to create a brief, engaging summary thread where each article gets its own post with a link.
 
 WRITING RULES (stop_slop):
 {stop_slop_rules}
@@ -72,35 +73,45 @@ CRITICAL FRAMING RULES:
 - Use framing like "researchers", "teams", "studies showed"
 - Write as a curator highlighting others' work
 
-TASK: Generate a 2-3 post thread summarizing this week's preprints:
+TASK: Generate a roundup thread. The thread has this structure:
+- First section: an intro blurb (under 280 characters)
+- Then one section per article: a brief, engaging summary of that article (under 220 characters each, because the article link will be appended automatically)
+- Optionally, a closing section (under 280 characters)
 
-POST 1 (intro):
+Each section is separated by "---".
+
+INTRO (section 1):
 - Start with something like "This week in preprints:" or similar
 - Mention how many papers were highlighted
 - Hint at any connecting theme if one emerges naturally
 - MUST be under 280 characters
 
-POST 2 (highlights):
-- Brief 1-line mention of 2-3 standout papers (just title keywords + why interesting)
-- Reference them casually, attributing to researchers when natural
-- MUST be under 280 characters
+ARTICLE SECTIONS (one per article, in the same order as provided):
+- Write a brief, engaging 1-2 sentence summary of the article
+- MUST be under 220 characters (a link will be appended automatically)
+- Do NOT include the URL yourself
 
-POST 3 (optional, only if needed):
-- Any remaining highlights or a closing thought
-- Could invite discussion or ask what others found interesting this week
+CLOSING (optional, final section):
+- Invite discussion or a closing thought
 - MUST be under 280 characters
 
 FORMAT:
-- Output each post on its own line, separated by "---"
+- Output each section separated by "---"
+- The article sections MUST appear in the same order as the articles listed
+- There must be exactly {len(posts)} article sections (one per article)
 - No hashtags
 - No emoji except sparingly if natural
 - Be genuine and conversational, not performative
 - NEVER use em-dashes, use commas or periods instead
 
-Example output format:
-This week in preprints: 6 papers spanning genomics to evolutionary dev bio. A few convergent evolution stories stood out.
+Example for 3 articles:
+This week in preprints: 3 papers spanning genomics to evolutionary dev bio.
 ---
-Highlights: researchers showing mushroom psilocybin evolved twice independently, a clever CRISPR screen for host-pathogen interactions, and some gorgeous single-cell atlases.
+Researchers found mushroom psilocybin evolved twice independently, a striking case of convergent evolution in fungi.
+---
+A clever CRISPR screen reveals new host-pathogen interaction mechanisms that could reshape how we think about infection.
+---
+Gorgeous single-cell atlases map gene expression across developing embryos with unprecedented resolution.
 ---
 What caught your eye in preprints this week?"""
 
@@ -108,33 +119,81 @@ What caught your eye in preprints this week?"""
 
 {posts_text}
 
-Remember: 2-3 posts, each under 280 characters, separated by ---"""
+Remember: intro + exactly {len(posts)} article summaries (each under 220 chars) + optional closing, separated by ---"""
 
     client = anthropic.Anthropic()
 
     try:
         response = client.messages.create(
             model="claude-sonnet-4-5-20250929",
-            max_tokens=1000,
+            max_tokens=2000,
             system=system_prompt,
             messages=[{"role": "user", "content": user_prompt}],
         )
 
         content = response.content[0].text.strip()
 
-        # Parse the posts
-        thread_posts = [p.strip() for p in content.split("---") if p.strip()]
+        # Parse the sections
+        sections = [s.strip() for s in content.split("---") if s.strip()]
 
-        # Validate lengths — split oversized posts, carrying remainder forward
+        if len(sections) < 1 + len(posts):
+            print(f"Warning: expected at least {1 + len(posts)} sections (intro + articles), got {len(sections)}")
+            return None
+
+        # Build thread_posts and link_urls
+        # Section 0 = intro, sections 1..N = articles, section N+1 = optional closing
+        intro = sections[0]
+        article_sections = sections[1:1 + len(posts)]
+        closing_sections = sections[1 + len(posts):]
+
+        # Collect article URLs in order
+        article_urls = [post.get('web_url', '') or None for post in posts]
+
+        # Validate lengths
         from post_generator import validate_thread_posts
-        ROUNDUP_LIMIT = 280
-        valid_posts = validate_thread_posts(
-            thread_posts,
-            first_post_limit=ROUNDUP_LIMIT,
-            other_post_limit=ROUNDUP_LIMIT,
+
+        FULL_LIMIT = 280
+        ARTICLE_LIMIT = 220  # leave room for "\n\n" + URL (~59 chars)
+
+        # Validate intro
+        intro_valid = validate_thread_posts(
+            [intro],
+            first_post_limit=FULL_LIMIT,
+            other_post_limit=FULL_LIMIT,
         )
 
-        return valid_posts if valid_posts else None
+        # Validate each article post individually and track link mapping
+        valid_article_posts = []
+        article_link_map = []  # parallel to valid_article_posts
+        for idx, article_text in enumerate(article_sections):
+            validated = validate_thread_posts(
+                [article_text],
+                first_post_limit=ARTICLE_LIMIT,
+                other_post_limit=ARTICLE_LIMIT,
+            )
+            for j, vpost in enumerate(validated):
+                valid_article_posts.append(vpost)
+                # Only the first chunk of a split article gets the link
+                article_link_map.append(article_urls[idx] if j == 0 else None)
+
+        # Validate closing if present
+        valid_closing = []
+        if closing_sections:
+            valid_closing = validate_thread_posts(
+                closing_sections,
+                first_post_limit=FULL_LIMIT,
+                other_post_limit=FULL_LIMIT,
+            )
+
+        # Assemble final thread and parallel link_urls
+        thread_posts = intro_valid + valid_article_posts + valid_closing
+        link_urls: list[str | None] = (
+            [None] * len(intro_valid)
+            + article_link_map
+            + [None] * len(valid_closing)
+        )
+
+        return (thread_posts, link_urls) if thread_posts else None
 
     except Exception as e:
         print(f"Error generating roundup: {e}")
@@ -166,16 +225,22 @@ def main():
 
     # Generate roundup thread
     print("\nGenerating roundup thread with Claude...")
-    thread = generate_roundup(posts)
+    result = generate_roundup(posts)
 
-    if not thread:
+    if not result:
         print("Failed to generate roundup.")
         sys.exit(1)
 
+    thread, link_urls = result
+
     print(f"\n--- Generated Thread ({len(thread)} posts) ---")
-    for i, post in enumerate(thread, 1):
-        print(f"\nPost {i} ({len(post)} chars):")
+    for i, post in enumerate(thread):
+        url = link_urls[i] if i < len(link_urls) else None
+        url_len = len(f"\n\n{url}") if url else 0
+        print(f"\nPost {i+1} ({len(post)} chars, {len(post) + url_len} with link):")
         print(post)
+        if url:
+            print(f"  Link: {url}")
 
     if args.dry_run:
         print("\n" + "=" * 60)
@@ -186,8 +251,8 @@ def main():
         try:
             poster = BlueskyPoster()
 
-            # Post as a thread
-            uris = poster.post_thread(thread)
+            # Post as a thread with per-post links
+            uris = poster.post_thread(thread, link_urls=link_urls)
 
             if uris:
                 print(f"\nPosted roundup thread successfully!")

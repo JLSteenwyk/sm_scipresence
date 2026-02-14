@@ -223,6 +223,7 @@ class BlueskyPoster:
         self,
         posts: List[str],
         link_url: Optional[str] = None,
+        link_urls: Optional[List[Optional[str]]] = None,
         image: Optional[ExtractedFigure] = None,
         image_alt: str = "Figure from preprint"
     ) -> Optional[List[str]]:
@@ -231,6 +232,7 @@ class BlueskyPoster:
         Args:
             posts: List of post texts (in order)
             link_url: URL to include in the first post
+            link_urls: Per-post URLs (same length as posts). Overrides link_url if provided.
             image: Optional figure to attach to the first post
             image_alt: Alt text for the image
 
@@ -251,17 +253,23 @@ class BlueskyPoster:
             root_ref = None
 
             for i, post_text in enumerate(posts):
-                # First post gets the link and image
                 facets = None
                 embed = None
 
-                if i == 0:
-                    if link_url:
-                        post_text, facets = self._create_facets_for_link(post_text, link_url)
-                    if image:
-                        img = self._upload_image(image.image_bytes, image_alt)
-                        if img:
-                            embed = models.AppBskyEmbedImages.Main(images=[img])
+                # Per-post link from link_urls takes priority
+                post_link = None
+                if link_urls and i < len(link_urls):
+                    post_link = link_urls[i]
+                elif i == 0 and link_url:
+                    post_link = link_url
+
+                if post_link:
+                    post_text, facets = self._create_facets_for_link(post_text, post_link)
+
+                if i == 0 and image:
+                    img = self._upload_image(image.image_bytes, image_alt)
+                    if img:
+                        embed = models.AppBskyEmbedImages.Main(images=[img])
 
                 # Build reply reference for thread
                 reply = None
