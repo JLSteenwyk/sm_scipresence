@@ -16,6 +16,7 @@ import anthropic
 
 from bluesky_poster import BlueskyPoster
 from twitter_poster import TwitterPoster
+from linkedin_poster import LinkedInPoster
 from posting_history import get_posts_from_last_n_days
 
 
@@ -281,6 +282,19 @@ def main():
                 print("Warning: Failed to post thread to Twitter")
         except Exception as e:
             print(f"Warning: Twitter posting failed: {e}")
+
+        # Post to LinkedIn (non-blocking)
+        print("\nPosting roundup to LinkedIn...")
+        try:
+            linkedin_poster = LinkedInPoster()
+            linkedin_success = linkedin_poster.post_thread(thread, link_urls=link_urls)
+
+            if linkedin_success:
+                print("Posted roundup to LinkedIn!")
+            else:
+                print("Warning: Failed to post roundup to LinkedIn")
+        except Exception as e:
+            print(f"Warning: LinkedIn posting failed: {e}")
 
     print("\n" + "=" * 60)
     print("Done!")

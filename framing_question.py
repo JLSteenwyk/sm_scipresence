@@ -19,6 +19,7 @@ import anthropic
 
 from bluesky_poster import BlueskyPoster
 from twitter_poster import TwitterPoster
+from linkedin_poster import LinkedInPoster
 
 
 def git_commit_and_push(message: str) -> bool:
@@ -349,6 +350,18 @@ def main():
                         twitter_poster.post_single(question)
                 except Exception as e:
                     print(f"Warning: Twitter posting failed: {e}")
+
+                # Post to LinkedIn (non-blocking)
+                print("\nPosting to LinkedIn...")
+                try:
+                    linkedin_poster = LinkedInPoster()
+                    linkedin_success = linkedin_poster.post_single(question)
+                    if linkedin_success:
+                        print("Posted framing question to LinkedIn!")
+                    else:
+                        print("Warning: Failed to post to LinkedIn")
+                except Exception as e:
+                    print(f"Warning: LinkedIn posting failed: {e}")
 
                 # Record that we posted this week
                 save_framing_posted()

@@ -23,6 +23,7 @@ from post_generator import generate_post, download_pdf
 from figure_extractor import extract_figure_from_pdf
 from bluesky_poster import BlueskyPoster
 from twitter_poster import TwitterPoster
+from linkedin_poster import LinkedInPoster
 from framing_question import save_preprint_for_followup
 from posting_history import save_to_history
 
@@ -304,6 +305,24 @@ Examples:
                         print("Warning: Failed to post to Twitter (Bluesky post was successful)")
                 except Exception as e:
                     print(f"Warning: Twitter posting failed: {e} (Bluesky post was successful)")
+
+                # Post to LinkedIn (non-blocking)
+                print("\n" + "-" * 40)
+                print("Posting to LinkedIn...")
+                try:
+                    linkedin_poster = LinkedInPoster()
+                    linkedin_success = linkedin_poster.post(
+                        post,
+                        link_url=selected.web_url,
+                        image=figure,
+                        image_alt=f"Figure from: {selected.title[:100]}"
+                    )
+                    if linkedin_success:
+                        print("Successfully posted to LinkedIn!")
+                    else:
+                        print("Warning: Failed to post to LinkedIn (Bluesky post was successful)")
+                except Exception as e:
+                    print(f"Warning: LinkedIn posting failed: {e} (Bluesky post was successful)")
 
                 # Save the preprint as posted
                 save_posted_preprint(selected.doi)
