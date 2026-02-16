@@ -2,7 +2,7 @@
 # Scheduled runner for bioRxiv to Bluesky poster
 # Adds random delay to avoid appearing automated
 
-cd /home/jlsteenwyk/Desktop/bluesky_science
+cd /home/jlsteenwyk/Desktop/sm_scipresence
 
 # Load environment variables
 set -a
