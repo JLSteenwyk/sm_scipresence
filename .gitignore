@@ -18,6 +18,7 @@ dist/
 posted_preprints.json
 last_posted_preprint.json
 last_framing_question.json
+posting_history.json
 
 # Logs
 *.log
