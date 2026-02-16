@@ -14,11 +14,7 @@ build/
 dist/
 *.egg-info/
 
-# State files (tracking posted content)
-posted_preprints.json
-last_posted_preprint.json
-last_framing_question.json
-posting_history.json
+# State files are tracked for backup/portability
 
 # Logs
 *.log

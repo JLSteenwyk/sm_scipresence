@@ -1,0 +1,13 @@
+{
+  "doi": "10.1101/2025.02.09.637326",
+  "title": "Proteome-wide prediction of the Functional Impact of Missense Variants with ProteoCast",
+  "abstract": "Dissecting the functional impact of genetic mutations is essential to advancing our understanding of genotype-phenotype relationships and identifying therapeutic targets. Despite progress in sequencing and genome editing technologies, proteome-wide mutation effect prediction remains challenging. Here we show that evolutionary information alone enables accurate prediction of mutation effects across entire proteomes. ProteoCast is a scalable and interpretable computational method that leverages protein sequence conservation to classify genetic variants and identify functionally important protein sites. We apply ProteoCast to the complete Drosophila melanogaster proteome (22,000 isoforms, 300 million mutations) and validate it against nearly 400,000 natural and experimental variants. It correctly classifies 85% of known lethal mutations as functionally impactful versus 13-18% of population variants. ProteoCast-guided genome editing experiments confirm these predictions. Moreover, ProteoCast successfully identifies functionally important protein modification sites and binding motifs. ProteoCast provides a publicly available resource and deployable pipeline for studying gene function and mutations in any organism.",
+  "category": "evolutionary biology",
+  "web_url": "https://www.biorxiv.org/content/10.1101/2025.02.09.637326",
+  "post_uri": "at://did:plc:yn4knmhptpotqk6hjdcxxfii/app.bsky.feed.post/3meyhrgigm225",
+  "root_uri": "at://did:plc:yn4knmhptpotqk6hjdcxxfii/app.bsky.feed.post/3meyhrgigm225",
+  "last_uri": "at://did:plc:yn4knmhptpotqk6hjdcxxfii/app.bsky.feed.post/3meyhrgigm225",
+  "twitter_tweet_id": "2023434101337047290",
+  "twitter_last_tweet_id": "2023434101337047290",
+  "posted_date": "2026-02-16"
+}
