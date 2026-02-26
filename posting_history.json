@@ -159,6 +159,16 @@
       "authors": "Abakarova, M.; Freiberger, M. I.; Liehrmann, A.; Rera, M.; Laine, E.",
       "posted_at": "2026-02-16T08:27:39.574619",
       "posted_date": "2026-02-16"
+    },
+    {
+      "doi": "10.1101/2024.01.24.577019",
+      "title": "A naive piRNA Surveillance System That Broadly Monitors the Germline Transcriptome for Adaptive Genome Defense",
+      "abstract": "PIWI-interacting RNAs (piRNAs) safeguard germline genome integrity by directing PIWI proteins to silence invasive genetic elements such as transposons. Once an element is recognized as \"non-self,\" the piRNA system maintains long-term silencing through the ping-pong cycle--a self-reinforcing cleavage loop between sense and antisense RNAs that amplifies new piRNAs--and by incorporating fragments of invasive genetic elements into genomic piRNA clusters that serve as a molecular memory. Despite these robust and specific responses, how newly invading elements are initially identified as foreign remains unresolved. Here, we show that low levels of sense-stranded piRNAs are broadly generated from the transcriptome in silkworms, flies, and mice, in proportion to transcript abundance and largely independently of the canonical piRNA biogenesis pathways. In cultured silkworm cells, this process is employed to produce piRNAs from extremely abundant sub-genomic RNAs of Bombyx mori latent virus, which are implicated in antiviral defense. Similarly, reanalysis of piRNAs from recently endogenized retroviruses shows that, in mice, AKV-derived piRNAs are produced in direct proportion to the viral RNA abundance, whereas koala KoRV-A-derived piRNAs have progressed into ping-pong amplification. We propose that this inefficient, non-selective, abundance-coupled pathway constitutes a naive surveillance system in the germline: by broadly sampling abundant and potentially foreign transcripts, it seeds an initial pool of piRNA sequences that can be recruited into more efficient, specificity-conferring silencing pathways such as the ping-pong cycle.",
+      "category": "genetics",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.01.24.577019",
+      "authors": "Shoji, K.; Tomari, Y.",
+      "posted_at": "2026-02-26T08:25:52.050125",
+      "posted_date": "2026-02-26"
     }
   ]
 }
