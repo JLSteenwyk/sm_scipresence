@@ -127,7 +127,7 @@ Remember: intro + exactly {len(posts)} article summaries (each under 220 chars) 
 
     try:
         response = client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-4-6",
             max_tokens=2000,
             system=system_prompt,
             messages=[{"role": "user", "content": user_prompt}],

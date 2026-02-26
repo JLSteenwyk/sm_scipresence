@@ -230,7 +230,7 @@ Remember: under 280 characters, genuine curiosity, invite discussion from releva
 
     try:
         response = client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-4-6",
             max_tokens=300,
             system=system_prompt,
             messages=[{"role": "user", "content": user_prompt}],
@@ -242,7 +242,7 @@ Remember: under 280 characters, genuine curiosity, invite discussion from releva
         if len(post_text) > 280:
             print(f"Post too long ({len(post_text)} chars), regenerating...")
             response = client.messages.create(
-                model="claude-sonnet-4-5-20250929",
+                model="claude-sonnet-4-6",
                 max_tokens=300,
                 system=system_prompt + "\n\nCRITICAL: Your last attempt was too long. Be MORE concise. Under 280 characters is mandatory.",
                 messages=[{"role": "user", "content": user_prompt}],

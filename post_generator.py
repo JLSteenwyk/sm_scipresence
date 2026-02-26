@@ -283,7 +283,7 @@ Generate the Bluesky {"thread" if thread_mode else "post"} now. Remember the cha
     client = anthropic.Anthropic()
 
     response = client.messages.create(
-        model="claude-sonnet-4-5-20250929",
+        model="claude-sonnet-4-6",
         max_tokens=1000,
         system=system_prompt,
         messages=[{"role": "user", "content": user_content}],

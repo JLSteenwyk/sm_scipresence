@@ -148,7 +148,7 @@ Respond with ONLY the numbers of the top 5 preprints in ranked order, separated 
 
     try:
         response = client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-4-6",
             max_tokens=50,
             messages=[{"role": "user", "content": prompt}],
         )
@@ -246,7 +246,7 @@ Respond with ONLY the numbers of the top {min(top_n, len(candidates))} preprints
 
     try:
         response = client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model="claude-sonnet-4-6",
             max_tokens=50,
             messages=[{"role": "user", "content": prompt}],
         )
