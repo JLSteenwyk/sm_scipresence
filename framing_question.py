@@ -18,7 +18,6 @@ load_dotenv()
 import anthropic
 
 from bluesky_poster import BlueskyPoster
-from twitter_poster import TwitterPoster
 from linkedin_poster import LinkedInPoster
 
 
@@ -333,23 +332,6 @@ def main():
 
             if uri:
                 print(f"Posted to Bluesky: {uri}")
-
-                # Post to Twitter (non-blocking)
-                print("\nPosting to Twitter...")
-                try:
-                    twitter_poster = TwitterPoster()
-                    twitter_last_id = preprint.get("twitter_last_tweet_id")
-                    if twitter_last_id:
-                        print(f"Replying to tweet: {twitter_last_id}")
-                        twitter_poster.post_reply(
-                            text=question,
-                            reply_to_tweet_id=twitter_last_id,
-                        )
-                    else:
-                        print("No original tweet ID found, posting as standalone")
-                        twitter_poster.post_single(question)
-                except Exception as e:
-                    print(f"Warning: Twitter posting failed: {e}")
 
                 # Post to LinkedIn (non-blocking)
                 print("\nPosting to LinkedIn...")

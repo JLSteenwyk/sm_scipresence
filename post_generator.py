@@ -13,8 +13,9 @@ import requests
 from biorxiv_scraper import Preprint
 
 
-# Load stop_slop rules
+# Load writing quality rules
 STOP_SLOP_DIR = Path(__file__).parent / "stop_slop"
+HUMANIZER_DIR = Path(__file__).parent / "humanizer"
 
 # Bluesky's limit is 300 graphemes per post
 BLUESKY_GRAPHEME_LIMIT = 300
@@ -125,16 +126,25 @@ def validate_thread_posts(posts: list, first_post_limit: int, other_post_limit: 
     return validated
 
 
-def load_stop_slop_rules() -> str:
-    """Load all stop_slop rules into a single string for the prompt."""
+def load_writing_rules() -> str:
+    """Load all writing quality rules (stop_slop + humanizer) into a single string for the prompt."""
     rules = []
 
-    files = ["skills.md", "phrases.md", "structures.md", "examples.md"]
-    for filename in files:
+    # Load stop_slop rules
+    stop_slop_files = ["skills.md", "phrases.md", "structures.md", "examples.md"]
+    for filename in stop_slop_files:
         filepath = STOP_SLOP_DIR / filename
         if filepath.exists():
             with open(filepath, "r") as f:
-                rules.append(f"## {filename}\n{f.read()}")
+                rules.append(f"## stop_slop/{filename}\n{f.read()}")
+
+    # Load humanizer rules
+    humanizer_files = ["patterns.md", "voice.md"]
+    for filename in humanizer_files:
+        filepath = HUMANIZER_DIR / filename
+        if filepath.exists():
+            with open(filepath, "r") as f:
+                rules.append(f"## humanizer/{filename}\n{f.read()}")
 
     return "\n\n".join(rules)
 
@@ -348,7 +358,7 @@ def generate_post(
         pdf_content = None
 
     # Load stop_slop rules
-    stop_slop_rules = load_stop_slop_rules()
+    stop_slop_rules = load_writing_rules()
 
     # Grapheme limits (Bluesky max is 300)
     # First post has URL appended, so needs ~65 char buffer

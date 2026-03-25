@@ -15,20 +15,24 @@ load_dotenv()
 import anthropic
 
 from bluesky_poster import BlueskyPoster
-from twitter_poster import TwitterPoster
 from linkedin_poster import LinkedInPoster
 from posting_history import get_posts_from_last_n_days
 
 
 STOP_SLOP_DIR = Path(__file__).parent / "stop_slop"
+HUMANIZER_DIR = Path(__file__).parent / "humanizer"
 
 
-def load_stop_slop_rules() -> str:
-    """Load stop_slop rules."""
+def load_writing_rules() -> str:
+    """Load all writing quality rules (stop_slop + humanizer)."""
     rules = []
-    files = ["skills.md", "phrases.md", "structures.md", "examples.md"]
-    for filename in files:
+    for filename in ["skills.md", "phrases.md", "structures.md", "examples.md"]:
         filepath = STOP_SLOP_DIR / filename
+        if filepath.exists():
+            with open(filepath, "r") as f:
+                rules.append(f.read())
+    for filename in ["patterns.md", "voice.md"]:
+        filepath = HUMANIZER_DIR / filename
         if filepath.exists():
             with open(filepath, "r") as f:
                 rules.append(f.read())
@@ -49,7 +53,7 @@ def generate_roundup(posts: list, dry_run: bool = False) -> tuple[list[str], lis
     if not posts:
         return None
 
-    stop_slop_rules = load_stop_slop_rules()
+    stop_slop_rules = load_writing_rules()
 
     # Build summaries of the week's posts
     post_summaries = []
@@ -267,21 +271,6 @@ def main():
         except Exception as e:
             print(f"Bluesky error: {e}")
             sys.exit(1)
-
-        # Post to Twitter (non-blocking)
-        print("\nPosting thread to Twitter...")
-        try:
-            twitter_poster = TwitterPoster()
-            tweet_ids = twitter_poster.post_thread(thread, link_urls=link_urls)
-
-            if tweet_ids:
-                print(f"\nPosted roundup thread to Twitter!")
-                for i, tid in enumerate(tweet_ids, 1):
-                    print(f"  Tweet {i}: {tid}")
-            else:
-                print("Warning: Failed to post thread to Twitter")
-        except Exception as e:
-            print(f"Warning: Twitter posting failed: {e}")
 
         # Post to LinkedIn (non-blocking)
         print("\nPosting roundup to LinkedIn...")

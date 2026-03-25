@@ -22,9 +22,7 @@ from preprint_selector import select_best_preprint, select_ranked_preprints, sav
 from post_generator import generate_post, download_pdf
 from figure_extractor import extract_figure_from_pdf
 from bluesky_poster import BlueskyPoster
-from twitter_poster import TwitterPoster
 from linkedin_poster import LinkedInPoster
-from framing_question import save_preprint_for_followup
 from posting_history import save_to_history
 
 
@@ -285,27 +283,6 @@ Examples:
                 for i, uri in enumerate(uris, 1):
                     print(f"  Post {i}: {uri}")
 
-                # Post to Twitter (non-blocking - Bluesky success is preserved)
-                twitter_tweet_ids = None
-                print("\n" + "-" * 40)
-                print("Posting to Twitter...")
-                try:
-                    twitter_poster = TwitterPoster()
-                    twitter_tweet_ids = twitter_poster.post(
-                        post,
-                        link_url=selected.web_url,
-                        image=figure,
-                        image_alt=f"Figure from: {selected.title[:100]}"
-                    )
-                    if twitter_tweet_ids:
-                        print("Successfully posted to Twitter!")
-                        for i, tid in enumerate(twitter_tweet_ids, 1):
-                            print(f"  Tweet {i}: {tid}")
-                    else:
-                        print("Warning: Failed to post to Twitter (Bluesky post was successful)")
-                except Exception as e:
-                    print(f"Warning: Twitter posting failed: {e} (Bluesky post was successful)")
-
                 # Post to LinkedIn (non-blocking)
                 print("\n" + "-" * 40)
                 print("Posting to LinkedIn...")
@@ -327,23 +304,6 @@ Examples:
                 # Save the preprint as posted
                 save_posted_preprint(selected.doi)
                 print(f"\nMarked {selected.doi} as posted")
-
-                # Save preprint info for afternoon follow-up (include post URI for replies)
-                followup_data = {
-                    "doi": selected.doi,
-                    "title": selected.title,
-                    "abstract": selected.abstract,
-                    "category": selected.category,
-                    "web_url": selected.web_url,
-                    "post_uri": uris[0],  # First post URI (or only post for single)
-                    "root_uri": uris[0],  # Root of thread
-                    "last_uri": uris[-1],  # Last post in thread (for replying to end)
-                }
-                if twitter_tweet_ids:
-                    followup_data["twitter_tweet_id"] = twitter_tweet_ids[0]
-                    followup_data["twitter_last_tweet_id"] = twitter_tweet_ids[-1]
-                save_preprint_for_followup(followup_data)
-                print("Saved preprint info for afternoon follow-up")
 
                 # Save to posting history for weekly roundups
                 save_to_history({
