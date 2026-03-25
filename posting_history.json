@@ -169,6 +169,16 @@
       "authors": "Shoji, K.; Tomari, Y.",
       "posted_at": "2026-02-26T08:25:52.050125",
       "posted_date": "2026-02-26"
+    },
+    {
+      "doi": "10.1101/2024.10.10.617725",
+      "title": "Extensive longevity and DNA virus-driven adaptation in nearctic Myotis bats",
+      "abstract": "Summary ParagraphThe genus Myotis is one of the largest clades of bats, and exhibits some of the most extreme variation in lifespans among mammals alongside unique adaptations to viral tolerance and immune defense1-5. To study the evolution of longevity-associated traits and response to infectious disease, we generated cell lines and near-complete genome assemblies for 8 closely related species of Myotis. Using genome-wide screens of positive selection, analyses of structural variation, and functional experiments in primary cells, we identify new patterns of adaptation contributing to longevity, cancer resistance, and viral interactions in bats. We demonstrate distinct modes of adaptation to DNA and RNA viruses in bats, with bats demonstrating genome-wide overrepresentation of positive selection for DNA virus-interacting proteins, and significant rates of copy number variation for RNA virus-interacting proteins, in contrast to other mammals. We show that the recurrent evolution of longevity seen in Myotis leads to pervasive positive selection in cancer pathways, and demonstrate a unique response to DNA damage in primary cells of the long-lived M. lucifugus. Together, our results suggest that bats remarkable longevity and immunity are linked through pleiotropic adaptations against viruses and aging-related disease.",
+      "category": "genomics",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.10.10.617725",
+      "authors": "Vazquez, J. M.; Lauterbur, M. E.; Mottaghinia, S.; Gaucherand, L.; Maesen, S.; Singer, M.; Santos Villa, S. G.; Bucci, M.; Fraser, D.; Gray-Sandoval, G.; Haidar, Z. R.; Han, M.; Kohler, W.; Lama, T. M.; Le Corf, A.; Loyer, C.; McMillan, D.; Li, S.; Lo, J.; Rey, C.; Capel, S. L.; Slocum, K.; Thomas, W.; Debelak Tyburec, J.; Miller, R.; Buchalski, M.; Vazquez-Medina, J. P.; Pfeffer, S.; Etienne, L.; Enard, D.; Sudmant, P. H.",
+      "posted_at": "2026-03-25T08:21:14.177201",
+      "posted_date": "2026-03-25"
     }
   ]
 }
