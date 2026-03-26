@@ -179,6 +179,16 @@
       "authors": "Vazquez, J. M.; Lauterbur, M. E.; Mottaghinia, S.; Gaucherand, L.; Maesen, S.; Singer, M.; Santos Villa, S. G.; Bucci, M.; Fraser, D.; Gray-Sandoval, G.; Haidar, Z. R.; Han, M.; Kohler, W.; Lama, T. M.; Le Corf, A.; Loyer, C.; McMillan, D.; Li, S.; Lo, J.; Rey, C.; Capel, S. L.; Slocum, K.; Thomas, W.; Debelak Tyburec, J.; Miller, R.; Buchalski, M.; Vazquez-Medina, J. P.; Pfeffer, S.; Etienne, L.; Enard, D.; Sudmant, P. H.",
       "posted_at": "2026-03-25T08:21:14.177201",
       "posted_date": "2026-03-25"
+    },
+    {
+      "doi": "10.1101/2024.06.11.598511",
+      "title": "Nuclear envelope rupture in cardiomyocytes orchestrates early transcriptomic changes and immune activation in LMNA-related dilated cardiomyopathy that are reversed by LINC complex disruption",
+      "abstract": "Mutations in the LMNA gene, which encodes the nuclear envelope (NE) proteins lamins A and C, cause dilated cardiomyopathy (LMNA-DCM) and other diseases. The pathogenic mechanisms for LMNA-DCM remain poorly understood, limiting current treatment options and leading to high mortality amongst patients. We developed a mouse model with inducible, cardiomyocyte-specific Lmna deletion (cKO) and performed comprehensive bulk, single-nucleus, and spatial transcriptomic analyses across disease progression. Our analysis identified key disease-driving genes involved in cellular responses to DNA damage, cytosolic pattern recognition receptor signaling, and innate immunity that originated from two disease-specific cardiomyocyte subpopulations. Spatial mapping revealed aberrant interactions between these cardiomyocytes, fibroblasts, and immune cells, contributing to tissue-wide transcriptional changes in cKO hearts. Concurrent cardiomyocyte-specific disruption of the LINC complex, which transmits cytoskeletal forces to the nucleus, substantially reduced NE rupture in cKO cardiomyocytes, normalized expression of more than half of the dysregulated genes, and dramatically improved cardiac function and survival in cKO mice. These findings suggest that NE rupture in cKO cardiomyocytes triggers cytosolic DNA sensing pathways and maladaptive cell-cell communication with fibroblasts and immune cells, leading to fibrosis and inflammation driving LMNA-DCM pathogenesis.",
+      "category": "cell biology",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.06.11.598511",
+      "authors": "Zuela - Sopilniak, N.; Morival, J. L. P.; Ntekas, I.; Elpers, M. A.; Agarwal, R.; Henretta, S. J.; Odell, J.; De Vlaminck, I.; Lammerding, J.",
+      "posted_at": "2026-03-26T08:29:39.097646",
+      "posted_date": "2026-03-26"
     }
   ]
 }
