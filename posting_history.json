@@ -199,6 +199,16 @@
       "authors": "Chen, G. T.; Nair, G.; Osorio, A. J.; Holley, S. M.; Ghassemzadeh, K.; Zhou, Y.; Gonzalez, J. G.; Martin, J. M.; Lu, C.; Sanjana, N. E.; Cepeda, C.; Geschwind, D.",
       "posted_at": "2026-03-27T08:24:12.381170",
       "posted_date": "2026-03-27"
+    },
+    {
+      "doi": "10.1101/2024.11.07.622552",
+      "title": "Entomopoxvirus-like long DNA sequences in human centromeric and peri-centromeric regions",
+      "abstract": "Mammalian genomes harbor a range of endogenous virus-like sequences, although these sequences are typically affected by mutations and deletions, and no examples have been reported of long, conserved regions extending tens of kilobases or more. In this study, a comprehensive similarity search against the complete human T2T genome (hT2T) using high-quality viral genome data was performed. Among nearly continuous viral sequences, the longest identified was Entomopoxvirus, spanning 140 kb with a similarity of over 57%. Notably, Entomopoxvirus-like sequences stood out within the human genome, with a total of 2.42 Mb exhibiting similarity to human sequences. Seven Entomopoxvirus species were fragmented into regions less than 40 kb each, with nearly all of these segments scattered throughout the human genome. Surprisingly, nearly all of these sequences were localized within the hsat1A regions of human centromeric and pericentromeric areas. On chromosome 3, for example, all sequences were confined within the centromere, and extensive transcription was observed across these regions. While the lack of fully sequenced genomes with solid annotations for other eukaryotic species limits our ability to infer the phylogenetic significance of these regions, our findings reveal remarkably long virus-like sequences within centromeric and related regions--as integral components of eukaryotic chromosomes.",
+      "category": "bioinformatics",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.11.07.622552",
+      "authors": "Hondo, E.; Mizutani, T.; Shimoda, H.; Iida, A.",
+      "posted_at": "2026-03-28T08:19:12.163195",
+      "posted_date": "2026-03-28"
     }
   ]
 }
