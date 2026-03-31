@@ -209,6 +209,16 @@
       "authors": "Hondo, E.; Mizutani, T.; Shimoda, H.; Iida, A.",
       "posted_at": "2026-03-28T08:19:12.163195",
       "posted_date": "2026-03-28"
+    },
+    {
+      "doi": "10.1101/2024.09.03.610885",
+      "title": "A replication-centered phylogeny illuminates the evolutionary landscape of bacterial plasmids",
+      "abstract": "Plasmids are the most influential engines of bacterial evolution and horizontal gene transfer, fueling the global spread of traits such as antimicrobial resistance, yet their deep evolutionary relationships remain difficult to resolve because current classification schemes are constrained by host range and nucleotide similarity. Replication initiation proteins (RIPs), which govern plasmid persistence and diversification, also remain poorly annotated across public databases. Here we establish PInc, a curated and experimentally grounded replicon classification framework anchored in historically defined incompatibility groups of Pseudomonas plasmids. Homology searches beyond PInc revealed that most replication initiators analyzed here share a conserved winged-helix (WH) domain that interacts with DNA, defining a broad WH RIP superfamily. Using the conserved WH region, we reconstructed a large-scale phylogeny that linked WH RIPs to nearly one hundred thousand plasmids, representing approximately half of all plasmids, across public databases and resolved deep evolutionary structure, clade-specific host and environmental distributions, and substantial RIP diversity not captured by current typing tools or annotation schemes. This framework overcomes the historical host bias of plasmid typing and provides a replication-centered view of plasmid diversification across bacterial lineages and environments.",
+      "category": "microbiology",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.09.03.610885",
+      "authors": "Nishimura, Y.; Kaneko, K.; Kamijo, T.; Isogai, N.; Tokuda, M.; Xie, H.; Tsuda, Y.; Hirabayashi, A.; Moriuchi, R.; Dohra, H.; Kimbara, K.; Suzuki-Minakuchi, C.; Nojiri, H.; Suzuki, H.; Suzuki, M.; Shintani, M.",
+      "posted_at": "2026-03-31T08:29:01.494639",
+      "posted_date": "2026-03-31"
     }
   ]
 }
