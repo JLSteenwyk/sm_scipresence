@@ -229,6 +229,16 @@
       "authors": "van Hooff, J. J. E.; Eme, L.",
       "posted_at": "2026-04-04T08:31:36.062938",
       "posted_date": "2026-04-04"
+    },
+    {
+      "doi": "10.1101/2025.01.10.632443",
+      "title": "Defective transcription of AAGAG satellite DNA causes sex-ratio meiotic drive in Drosophila",
+      "abstract": "Male germ cells have complex transcriptomes, with a large fraction of the genome being transcribed. This includes protein-coding genes (often not translated), non-coding DNA, and repetitive DNA, such as transposons and satellite DNA, which are normally silenced as heterochromatin. The significance of such widespread transcription remains unknown. Here, we show that a heterochromatin protein, HP2, is required for the transcription of AAGAG satellite DNA in Drosophila spermatocytes. HP2 depletion leads to abnormal retention of heterochromatin histone marks (H3K9me3) and spermatid death during sperm DNA packaging, leading to a model that transcription of AAGAG satellite DNA facilitates the remodeling of its heterochromatic nature in preparation for sperm DNA packaging. Strikingly, the severity of the spermatid death correlates with the amount of AAGAG satellite DNA carried by the spermatids, leading to preferential death of Y chromosome-containing spermatids over X-containing spermatids, and hence sex-ratio meiotic drive phenotype. We propose that widespread spermatocyte transcription may reflect the process of chromatin remodeling to allow sperm DNA packaging. We further propose that differential composition and amount of satellite DNA on chromosomes may underlie naturally occurring male meiotic drive.",
+      "category": "developmental biology",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2025.01.10.632443",
+      "authors": "Kumon, T.; Nakamizo-Dojo, M.; Raz, A. A.; Lannes, R.; Fingerhut, J. M.; Yamashita, Y. M.",
+      "posted_at": "2026-04-06T08:23:18.962174",
+      "posted_date": "2026-04-06"
     }
   ]
 }
