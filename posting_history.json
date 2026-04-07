@@ -239,6 +239,16 @@
       "authors": "Kumon, T.; Nakamizo-Dojo, M.; Raz, A. A.; Lannes, R.; Fingerhut, J. M.; Yamashita, Y. M.",
       "posted_at": "2026-04-06T08:23:18.962174",
       "posted_date": "2026-04-06"
+    },
+    {
+      "doi": "10.1101/2021.04.05.438434",
+      "title": "DeepTrio: Variant Calling in Families Using Deep Learning",
+      "abstract": "Every human inherits one copy of the genome from their mother and another from their father. Parental inheritance helps us understand the transmission of traits and genetic diseases, which often involve de novo variants and rare recessive alleles. Here we present DeepTrio, which learns to analyze child-mother-father trios from the joint sequence information, without explicit encoding of inheritance priors. DeepTrio learns how to weigh sequencing error, mapping error, and de novo rates and genome context directly from the sequence data. DeepTrio has higher accuracy on both Illumina and PacBio HiFi data when compared to DeepVariant. Improvements are especially pronounced at lower coverages (with 20x DeepTrio roughly equivalent to 30x DeepVariant). DeepTrio includes pre-trained models for Illumina WGS, Illumina exome, and PacBio HiFi.",
+      "category": "bioinformatics",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2021.04.05.438434",
+      "authors": "Brambrink, L.; Kolesnikov, A.; Goel, S.; Nattestad, M.; Yun, T.; Baid, G.; Yang, H.; McLean, C.; Shafin, K.; Chang, P.-C.; Carroll, A.",
+      "posted_at": "2026-04-07T08:25:56.976337",
+      "posted_date": "2026-04-07"
     }
   ]
 }
