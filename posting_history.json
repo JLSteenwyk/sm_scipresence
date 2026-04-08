@@ -249,6 +249,16 @@
       "authors": "Brambrink, L.; Kolesnikov, A.; Goel, S.; Nattestad, M.; Yun, T.; Baid, G.; Yang, H.; McLean, C.; Shafin, K.; Chang, P.-C.; Carroll, A.",
       "posted_at": "2026-04-07T08:25:56.976337",
       "posted_date": "2026-04-07"
+    },
+    {
+      "doi": "10.1101/2024.10.14.618062",
+      "title": "Diverse gene ancestries reveal multiple microbial associations during eukaryogenesis",
+      "abstract": "The origin of eukaryotes remains a central enigma in biology1. Ongoing debates agree on the pivotal role of a symbiosis between an alphaproteobacterium and an Asgard archaeon2,3. However, the nature, timing and contributions of other potential bacterial partners4-6 or the role of interactions with viruses7-9 remain contentious. To address these questions, we employed advanced phylogenomic approaches and comprehensive datasets spanning the known diversity of cellular life and viruses. Our analysis provided an updated reconstruction of the last eukaryotic common ancestor (LECA) proteome, in which we traced the phylogenetic origin of each protein family. We found compelling evidence for multiple waves of horizontal gene transfer from diverse bacterial donors, with some likely preceding the mitochondrial endosymbiosis. We inferred plausible traits of the major donors and their functional contributions to LECA. Our findings underscore the contribution of horizontal gene transfers in shaping the proteomes of pre-LECA ancestors and hint to a facilitating role of Nucleocytoviricota viruses. Altogether, our results suggest that ancient eukaryotes originated within complex microbial ecosystems through a succession of diverse associations that left a footprint of horizontally transferred genes.",
+      "category": "evolutionary biology",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.10.14.618062",
+      "authors": "Bernabeu, M.; Manzano-Morales, S.; Marcet-Houben, M.; Gabaldon, T.",
+      "posted_at": "2026-04-08T08:33:34.036723",
+      "posted_date": "2026-04-08"
     }
   ]
 }
