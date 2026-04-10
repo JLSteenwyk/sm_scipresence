@@ -269,6 +269,16 @@
       "authors": "Rosen, Y.; Roohani, Y.; Agrawal, A.; Samotorcan, L.; Tabula Sapiens Consortium,  ; Quake, S. R.; Leskovec, J.",
       "posted_at": "2026-04-09T08:32:01.491247",
       "posted_date": "2026-04-09"
+    },
+    {
+      "doi": "10.1101/2024.10.17.618932",
+      "title": "Deep coalescent history of the hominin lineage",
+      "abstract": "Coalescent-based methods are widely used to infer population size histories, but existing analyses have limited resolution at deep time scales (>2 million years ago). Here, using new high-quality telomere-to-telomere genome assemblies, we extend the scope of such inference and reanalyse an ancient peak in human effective population size around 3-6 million years ago, showing that coalescent-based inference can reach much further into the past than previously thought. Furthermore, peaks at approximately the same time as in humans are also observed in chimpanzee and bonobo, but not in gorilla or orangutans. We show that this pattern is unlikely to be an artefact of model violations and discuss its potential implications for understanding hominin evolutionary history. It is known that such peaks can arise from ancestral genetic structure, and consequently we suggest that a parsimonious explanation for the contemporaneous peaks in humans, chimpanzees and bonobos would be a period of complex speciation before final separation of Homo from Pan, in contrast to a scenario where these lineages diverge cleanly from a panmictic common ancestor.",
+      "category": "genetics",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.10.17.618932",
+      "authors": "Cousins, T.; Durbin, R.; Schweiger, R.",
+      "posted_at": "2026-04-10T08:35:18.282560",
+      "posted_date": "2026-04-10"
     }
   ]
 }
