@@ -279,6 +279,16 @@
       "authors": "Cousins, T.; Durbin, R.; Schweiger, R.",
       "posted_at": "2026-04-10T08:35:18.282560",
       "posted_date": "2026-04-10"
+    },
+    {
+      "doi": "10.1101/2024.12.06.627285",
+      "title": "Spatial Organellomics Maps Cell State Diversity and Metabolic Adaptation in Tissues",
+      "abstract": "Cell state diversity drives tissue adaptability, repair, and disease resilience, but fully capturing this cellular complexity remains a challenge. Most current approaches rely on transcriptional profiling and often overlook functional insights embedded in organelle structure, key indicators of cellular metabolism and stress. Here, we introduce spatial Organellomics (sOrganellomics), an imaging workflow integrating automated segmentation with machine learning to classify and spatially map cell states based on multi-organelle features. Across metabolically specialized organs, these features distinguish organ-specific cellular identities. In the liver, sOrganellomics reveals a previously unrecognized hepatocyte organization: different hepatocyte states form intermixed communities rather than classical homogeneous graded zones, a pattern disrupted by nutritional stress. Intravital imaging further links fasting-associated architectural remodeling to altered mitochondrial membrane potential and bioenergetic heterogeneity in vivo. This approach maps metabolic transitions and early disease progression, establishing organelle architecture as a scalable readout of functional cell state diversity in tissues.",
+      "category": "cell biology",
+      "web_url": "https://www.biorxiv.org/content/10.1101/2024.12.06.627285",
+      "authors": "Adhikari, R.; Hillsley, A.; Johnson, A. D.; Gao, S. M.; Espinosa-Medina, I.; Funke, J.; Feliciano, D.",
+      "posted_at": "2026-04-11T08:26:37.045988",
+      "posted_date": "2026-04-11"
     }
   ]
 }
